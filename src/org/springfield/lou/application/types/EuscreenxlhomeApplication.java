@@ -3,7 +3,6 @@ package org.springfield.lou.application.types;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,7 +17,6 @@ import org.springfield.lou.fs.FSXMLStrainer;
 import org.springfield.lou.fs.Fs;
 import org.springfield.lou.fs.FsNode;
 import org.springfield.lou.fs.IncorrectFilterException;
-import org.springfield.lou.fs.NodeObserver;
 import org.springfield.lou.screen.Screen;
 
 public class EuscreenxlhomeApplication extends Html5Application implements Observer{
