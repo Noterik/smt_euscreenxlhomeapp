@@ -13,10 +13,10 @@ import org.dom4j.Node;
 import org.json.simple.JSONObject;
 import org.springfield.lou.application.Html5Application;
 import org.springfield.lou.application.components.ComponentManager;
-import org.springfield.lou.fs.FSXMLStrainer;
-import org.springfield.lou.fs.Fs;
-import org.springfield.lou.fs.FsNode;
-import org.springfield.lou.fs.IncorrectFilterException;
+import org.springfield.fs.FSXMLStrainer;
+import org.springfield.fs.Fs;
+import org.springfield.fs.FsNode;
+import org.springfield.fs.IncorrectFilterException;
 import org.springfield.lou.screen.Screen;
 
 public class EuscreenxlhomeApplication extends Html5Application implements Observer{
