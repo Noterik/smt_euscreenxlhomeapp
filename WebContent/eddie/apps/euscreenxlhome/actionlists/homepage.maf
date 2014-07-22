@@ -1,0 +1,11 @@
+loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
+loadStyleSheet(screen,all)
+loadStyleSheet(screen,generic) // load the generic stylesheet
+loadStylesheet(screen,specific)
+loadStylesheet(screen,ntk-layout)
+setRole(screen,"itempage")
+loadContent(screen,template)
+loadContent(screen,header)
+loadContent(screen,footer)
+loadContent(screen,collection)
+loadContent(startScreen,collectionview)
