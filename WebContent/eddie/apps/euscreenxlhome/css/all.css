@@ -1,5 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,400italic,600,600italic);
-@import "../bootstrap/font-awesome.min.css";
+@import "/eddie/apps/euscreenxlhome/css/font-awesome.min.css";
 /**
 * all.less
 *
@@ -94,7 +94,7 @@ body .page header .navbar .navbar-header a.navbar-brand {
   border: 0;
   width: 172px;
   height: 53px;
-  background: url("/eddie/apps/euscreenxlitem/img/sprites.png") -321px 0;
+  background: url("/eddie/apps/euscreenxlhome/img/sprites.png") -321px 0;
   margin: 8px auto ;
   float: none;
   /*
@@ -283,7 +283,7 @@ body .page .main .media-item .media-wrapper .media-length {
   z-index: 7;
 }
 body .page .main .media-item .media-wrapper .media-type {
-  background: url("/eddie/apps/euscreenxlitem/img/sprites.png");
+  background: url("/eddie/apps/euscreenxlhome/img/sprites.png");
   position: absolute;
   bottom: 0;
   right: 0;
@@ -381,7 +381,7 @@ body .page footer .affiliates .list-inline .europeancomission {
   -moz-transition: all .35s ease;
   opacity: 0.7;
   filter: alpha(opacity=70);
-  background: url("/eddie/apps/euscreenxlitem/img/sprites.png");
+  background: url("/eddie/apps/euscreenxlhome/img/sprites.png");
   width: 117px;
   height: 82px;
   display: inline-block;
@@ -406,7 +406,7 @@ body .page footer .affiliates .list-inline .europeana {
   -moz-transition: all .35s ease;
   opacity: 0.7;
   filter: alpha(opacity=70);
-  background: url("/eddie/apps/euscreenxlitem/img/sprites.png") -117px 0;
+  background: url("/eddie/apps/euscreenxlhome/img/sprites.png") -117px 0;
   width: 136px;
   height: 80px;
   display: inline-block;
@@ -478,7 +478,7 @@ body .mobilenav .info {
 body i.icono,
 body span.icono,
 body div.icono {
-  background-image: url("/eddie/apps/euscreenxlitem/img/sprites.png");
+  background-image: url("/eddie/apps/euscreenxlhome/img/sprites.png");
   display: inline-block;
 }
 body i.icono-copyright,

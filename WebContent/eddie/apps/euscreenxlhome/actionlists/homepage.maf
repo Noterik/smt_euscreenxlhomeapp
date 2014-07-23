@@ -1,3 +1,4 @@
+.when device=desktop
 loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
 loadStyleSheet(screen,all)
 loadStyleSheet(screen,generic) // load the generic stylesheet
@@ -8,4 +9,32 @@ loadContent(screen,template)
 loadContent(screen,header)
 loadContent(screen,footer)
 loadContent(screen,collection)
-loadContent(startScreen,collectionview)
+loadContent(screen,collectionview)
+loadContent(screen,themechooser)
+callServer(initializeScreen,screen,content)
+
+.when device=ipad
+loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
+loadStyleSheet(screen,all)
+loadStyleSheet(screen,generic) // load the generic stylesheet
+loadStylesheet(screen,specific)
+loadStylesheet(screen,ntk-layout)
+setRole(screen,"itempage")
+loadContent(screen,template)
+loadContent(screen,header)
+loadContent(screen,footer)
+loadContent(screen,collection)
+loadContent(screen,collectionview)
+loadContent(screen,themechooser)
+callServer(initializeScreen,screen,content)
+
+.when device=iphone
+loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
+loadStyleSheet(screen,all)
+loadStyleSheet(screen,generic) // load the generic stylesheet
+loadStylesheet(screen,specific)
+loadStylesheet(screen,ntk-layout)
+setRole(screen,"itempage")
+loadContent(screen,mobiletemplate)
+loadContent(screen,mobilenav)
+loadContent(screen,header)

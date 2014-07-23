@@ -2,27 +2,28 @@ package org.springfield.lou.application.types;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springfield.lou.application.Html5Application;
 import org.springfield.lou.application.components.ComponentManager;
-import org.springfield.fs.FSXMLStrainer;
+import org.springfield.lou.application.types.conditions.EqualsCondition;
+import org.springfield.lou.application.types.conditions.FilterCondition;
+import org.springfield.fs.FSList;
+import org.springfield.fs.FSListManager;
 import org.springfield.fs.Fs;
 import org.springfield.fs.FsNode;
-import org.springfield.fs.IncorrectFilterException;
 import org.springfield.lou.screen.Screen;
 
 public class EuscreenxlhomeApplication extends Html5Application implements Observer{
 
-	private FSXMLStrainer collectionStrainer;
-	private Map<String, Integer[]> chunksForScreens;
+	private FSList allNodes;
 	private String observingUri = "/domain/springfieldwebtv/user/david/video";
 	
 	private Comparator<Node> titleComparator = new Comparator<Node>(){
@@ -43,37 +44,11 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 		this.addReferid("header", "/euscreenxlelements/header");
 		this.addReferid("footer", "/euscreenxlelements/footer");
-				
-		chunksForScreens = new HashMap<String, Integer[]>();
-		try {
-			Document filterDocument = DocumentHelper.parseText("<filter><include><node id=\"video\"><include><property id=\"description\" /><property id=\"title\" /><property id=\"screenshot\" /></include></node></include></filter>");
-			collectionStrainer = new FSXMLStrainer(filterDocument);
-		} catch (IncorrectFilterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		
+		allNodes = FSListManager.get(this.observingUri);
 	}
 	
-	public void startScreen(Screen s) {
-		System.out.println("-----------------------NEWSCREEN-------------------------");
-		System.out.println("CollectionrutgerApplication.onNewScreen()");
-		this.unsubscribe(this.observingUri);
-		System.out.println("OBSERVING URI:" + observingUri);
-		System.out.println("COLLECTION STRAINER: " + collectionStrainer);
-		this.subscribe(this.observingUri, collectionStrainer);
-		System.out.println("----------------------END NEWSCREEN----------------------");
-		initializeScreen(s);
-	}
-	
-	private void initializeScreen(Screen s){
-		/*
-		System.out.println("EuscreenxlhomeApplication.initializeScreen()");
-		this.chunksForScreens.put(s.getId(), 0);
-		getNextChunk(s);
-		*/
+	public void initializeScreen(Screen s){
 		s.putMsg("collectionview", "app", "createGrid()");
 	}
 	
@@ -82,21 +57,70 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		int limit = Integer.parseInt(content);
 		int start = 0;
 		int stop;
-		if(this.chunksForScreens.containsKey(s.getId())){
-			Integer[] range = this.chunksForScreens.get(s.getId());
-			start = range[1];
+		
+		if(s.getProperty("chunkRange") != null){
+			Integer[] chunkRange = (Integer[]) s.getProperty("chunkRange");
+			start = chunkRange[1] + 1;
 		}
 		
-		stop = start + limit;
+		if(start == 0){
+			stop = start + limit;
+		}else{
+			stop = start + limit - 1;
+		}
 		
 		Integer[] newRange = {start, stop};
-		this.chunksForScreens.put(s.getId(), newRange);
+		s.setProperty("chunkRange", newRange);
 		getNextChunk(s);
 	}
 	
 	public void getNextChunk(Screen s){
-		Integer[] range = this.chunksForScreens.get(s.getId());
-		s.putMsg("collectionview", "app", "appendItems(" + this.observingNodes.get(this.observingUri).get("//video[position() >= " + range[0] + " and position() < " + (range[1] + 1) + "]").asXML() + ")");
+		Integer[] range = (Integer[]) s.getProperty("chunkRange");
+		
+		List<FsNode> nodes = allNodes.getNodes();
+		if(s.getProperty("filter") != null){
+			Filter filter = (Filter) s.getProperty("filter");
+			nodes = filter.apply(nodes);
+		}
+		
+		int start = range[0];
+		int stop = range[1];
+		
+		if(start != 0){
+			stop += 1;
+		}
+		
+		if(stop >= nodes.size()){
+			if(stop > nodes.size()){
+				stop = nodes.size() - 1;
+			}
+			s.putMsg("collectionview", "app", "endReached()");
+		}
+		
+		nodes = nodes.subList(start, stop);
+		
+		JSONArray objectToSend = new JSONArray();
+		
+		for(Iterator<FsNode> i = nodes.iterator(); i.hasNext();){
+			FsNode node = i.next();
+			JSONObject item = new JSONObject();
+			item.put("id", node.getId());
+			item.put("title", node.getProperty("title"));
+			item.put("screenshot", node.getProperty("screenshot"));
+			item.put("description", node.getProperty("description"));
+			objectToSend.add(item);
+		}
+		s.putMsg("collectionview", "app", "appendItems(" + objectToSend + ")");
+	}
+	
+	public void setTopic(Screen s, String topic){
+		FilterCondition condition = new EqualsCondition(FieldMappings.getSystemFieldName("topic"), topic, ",");
+		Filter filter = new Filter();
+		filter.addCondition(condition);
+		s.setProperty("filter", filter);
+		s.setProperty("chunkRange", null);
+		s.putMsg("collectionview", "app", "createGrid()");
+		getNextChunk(s);
 	}
 	
 	@Override
