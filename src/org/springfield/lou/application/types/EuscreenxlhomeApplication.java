@@ -42,6 +42,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
  	public EuscreenxlhomeApplication(String id) {
 		super(id); 
 		
+		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		this.addReferid("header", "/euscreenxlelements/header");
 		this.addReferid("footer", "/euscreenxlelements/footer");
 		

@@ -29,6 +29,7 @@
         var init = function() {
         	console.log("INIT!!!");
         	settings.openButton.click(function(){
+        		console.log("CLICK!!!");
 	            if (obj.hasClass('open')) {
 	                slideIn();
 	            } else {
@@ -48,6 +49,8 @@
         	// animate
         	obj.animate({left:0}, settings.speed);
         	settings.pageSection.animate({left:obj.width()}, settings.speed);
+        	console.log("WIDTH!!!");
+        	console.log(obj.width());
         	settings.navbarSection.css({width:'100%'}).animate({left:obj.width()}, settings.speed);
         	
         	// hide scrolling

@@ -1,40 +1,44 @@
 .when device=desktop
+setUrlTrigger(/lou/euscreen/home.html,/lou/domain/webtv/html5application/euscreenxlhome)
+setUrlTrigger(/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
 loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
-loadStyleSheet(screen,all)
-loadStyleSheet(screen,generic) // load the generic stylesheet
+loadStylesheet(screen,generic)
 loadStylesheet(screen,specific)
 loadStylesheet(screen,ntk-layout)
 setRole(screen,"itempage")
 loadContent(screen,template)
 loadContent(screen,header)
+loadContent(screen,mobilenav)
 loadContent(screen,footer)
 loadContent(screen,collection)
 loadContent(screen,collectionview)
 loadContent(screen,themechooser)
+loadContent(screen,carousel)
 callServer(initializeScreen,screen,content)
 
 .when device=ipad
 loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
-loadStyleSheet(screen,all)
-loadStyleSheet(screen,generic) // load the generic stylesheet
+loadStylesheet(screen,generic)
 loadStylesheet(screen,specific)
 loadStylesheet(screen,ntk-layout)
 setRole(screen,"itempage")
 loadContent(screen,template)
 loadContent(screen,header)
+loadContent(screen,mobilenav)
 loadContent(screen,footer)
 loadContent(screen,collection)
 loadContent(screen,collectionview)
 loadContent(screen,themechooser)
+loadContent(screen,carousel)
 callServer(initializeScreen,screen,content)
 
 .when device=iphone
 loadStyleSheet(screen,bootstrap) //load the bootstrap stylesheet
-loadStyleSheet(screen,all)
-loadStyleSheet(screen,generic) // load the generic stylesheet
+loadStylesheet(screen,generic)
 loadStylesheet(screen,specific)
 loadStylesheet(screen,ntk-layout)
 setRole(screen,"itempage")
 loadContent(screen,mobiletemplate)
-loadContent(screen,mobilenav)
 loadContent(screen,header)
+loadContent(screen,mobilenav)
+loadContent(screen,carousel)
