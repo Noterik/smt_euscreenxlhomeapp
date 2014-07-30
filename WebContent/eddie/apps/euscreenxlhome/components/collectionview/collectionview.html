@@ -1,13 +1,24 @@
 <script type="text/template" id="item-template">
-    <div class="ntk-layout-item">
+    <div class="ntk-layout-item media-item">
+    	<div class="media-wrapper">
+            <a class="modal-button" data-toggle="modal" data-target="#player-modal" data-backdrop="static">
+                <img src="<%= item.screenshot %>" class="media-object img-responsive">
+                <span class="media-hue"><i class="glyphicon glyphicon-play"></i></span>
+                <span class="media-title">
+                    <h3><%= item.description %></h3>
+                </span>
+            </a>
+        </div>
+        <!--
         <div class="contents">
 			<img src="<%= item.screenshot %>" height="100%" width="100%" />
 			<div class="overlay">
 				<div class="text">
-					<%= item.description %>
+					
 				</div>
 			</div>
         </div>
+        -->
     </div>
 </script>
 <script type="text/template" id="chunk-template">

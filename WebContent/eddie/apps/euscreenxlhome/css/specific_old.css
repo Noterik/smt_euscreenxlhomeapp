@@ -1,0 +1,247 @@
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web:400,400italic,600,600italic);
+/**
+* css/home/all.less
+*
+* This file contains the generic styles for the item page. These styles should be applied on all devices,
+* but might be overwritten in specific cases for certain devices.
+*/
+.home .main .row .jumbotron {
+  border-radius: 0px;
+  height: 418px;
+  padding: 0px;
+  margin-bottom: 0px;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg {
+  background: url('/eddie/apps/euscreenxlelements/img/bg-home-1.gif') no-repeat;
+  width: 100%;
+  height: 418px;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap {
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 250px #000;
+  overflow: hidden;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption {
+  padding: 0px;
+  left: 7%;
+  right: 7%;
+  text-align: left;
+  bottom: auto;
+  top: 17%;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption h1,
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption p {
+  font-size: 1.9em;
+  padding: 11px 20px 15px 20px;
+  margin-bottom: 0px;
+  display: table;
+  background: rgba(140, 198, 63, 0.8);
+  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+  text-shadow: none;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption p {
+  font-size: 1.071em;
+  margin-top: 5px;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg-1 {
+  background: url('/eddie/apps/euscreenxlelements/img/bg-home-1.gif') no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg-2 {
+  background: url('/eddie/apps/euscreenxlelements/img/bg-home-2.gif') no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg-3 {
+  background: url('/eddie/apps/euscreenxlelements/img/bg-home-3.gif') no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.home .main .row .jumbotron .carousel .carousel-control {
+  width: 10%;
+}
+.home .main .row .jumbotron .carousel .carousel-indicators {
+  bottom: 10px;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.home .main .row .jumbotron .carousel .carousel-indicators li.active {
+  margin: 1px;
+  width: 10px;
+  height: 10px;
+}
+.home .main .row .collection-viewer-tab {
+  margin-top: 6px;
+}
+.home .main .row .collection-viewer-tab .main-nav {
+  background-color: #ffffff;
+}
+.home .main .row .collection-viewer-tab .second-nav {
+  background-color: #ffffff;
+  border-bottom: 5px solid #00aeef;
+  margin-top: 1px;
+}
+.home .main .row .collection-viewer-tab .second-nav .list-inline {
+  padding: 13px 20px 2px 20px;
+}
+.home .main .row .collection-viewer-tab .second-nav .list-inline li {
+  margin-right: 5px;
+}
+.home .main .row .collection-viewer-tab .second-nav .list-inline li a {
+  color: #808080;
+  font-size: 0.929em;
+  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+}
+.home .main .row .collection-viewer-tab .second-nav .list-inline li a:hover,
+.home .main .row .collection-viewer-tab .second-nav .list-inline li a:active {
+  color: #00aeef;
+}
+.home .main .row .collection-viewer-tab .second-nav .list-inline li.active a {
+  color: #00aeef;
+}
+.home .main .row .collection-viewer-tab .second-nav .list-inline li:last-child {
+  margin-right: 0px;
+}
+.home .main .row .collection-viewer-tab .row [class*='col-'] {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.home .main .row .collection-viewer-tab .row .action {
+  text-align: right;
+}
+.home .main .row .collection-viewer-tab .row .tabs .nav {
+  margin-top: 0px;
+  border: 0px;
+}
+.home .main .row .collection-viewer-tab .row .tabs .nav li {
+  margin: 0px;
+  border-right: 1px solid #f2f2f2;
+}
+.home .main .row .collection-viewer-tab .row .tabs .nav li a {
+  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+  border: 0px;
+  border-radius: 0px;
+  margin: 0px;
+  height: 60px;
+  line-height: inherit;
+  font-size: 1.071em;
+  color: #808080;
+  padding: 20px;
+  -webkit-transition: background 0.2s;
+  transition: background 0.2s;
+}
+.home .main .row .collection-viewer-tab .row .tabs .nav li a:hover {
+  background: #00aeef;
+  border-radius: 0px;
+  color: #ffffff;
+  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+}
+.home .main .row .collection-viewer-tab .row .tabs .nav li.active {
+  border-right: 1px solid #00aeef;
+}
+.home .main .row .collection-viewer-tab .row .tabs .nav li.active a {
+  background: #00aeef;
+  border-radius: 0px;
+  color: #ffffff;
+  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+}
+.home .main .row .collection-viewer-tab .row .action .button-list {
+  margin: 0;
+  padding: 0;
+}
+.home .main .row .collection-viewer-tab .row .action .button-list > li {
+  border-left: 1px solid #f2f2f2;
+  display: inline-block;
+  margin-left: -4px;
+  padding: 0px;
+  position: relative;
+  line-height: 14px;
+}
+.home .main .row .collection-viewer-tab .row .action .button-list > li button {
+  padding-top: 5px;
+  height: 60px;
+  width: 60px;
+  display: inline-block;
+  border: 0px;
+  border-radius: 0px;
+  box-shadow: none;
+  background: #ffffff;
+  -webkit-transition: background 0.35s;
+  transition: background 0.35s;
+}
+.home .main .row .collection-viewer-tab .row .action .button-list > li button:hover,
+.home .main .row .collection-viewer-tab .row .action .button-list > li button:active,
+.home .main .row .collection-viewer-tab .row .action .button-list > li button.active {
+  background: #00aeef;
+}
+.home .main .row .collection-viewer-tab .row .action .button-list > li button:hover i.icono-info,
+.home .main .row .collection-viewer-tab .row .action .button-list > li button:active i.icono-info,
+.home .main .row .collection-viewer-tab .row .action .button-list > li button.active i.icono-info {
+  background-position: -24px -106px;
+}
+.home .main .row .collection-viewer-tab .row .action .button-list > li button:hover i.icono-expand,
+.home .main .row .collection-viewer-tab .row .action .button-list > li button:active i.icono-expand,
+.home .main .row .collection-viewer-tab .row .action .button-list > li button.active i.icono-expand {
+  background-position: 0px -106px;
+}
+.home .main .row #collectionview{
+	position: relative;
+}
+.home .main .row #collectionview .item-chunk{
+	position: relative;
+}
+.home .main .row #collectionview .ntk-layout-item{
+	cursor: pointer;
+	background-color: yellow;
+}
+.home .main .row #collectionview .ntk-layout-item .overlay{
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	text-align: center;
+	-webkit-transition: opacity .2s ease-in-out;
+  	-moz-transition: opacity .2s ease-in-out;
+ 	-ms-transition: opacity .2s ease-in-out;
+  	-o-transition: opacity .2s ease-in-out;
+ 	transition: opacity .2s ease-in-out;
+ 	position: absolute;
+ 	top: 0;
+ 	left: 0;
+	opacity: 0;
+}
+
+.home .main .row #collectionview .ntk-layout-item .overlay:hover, .home .main .row #collectionview .ntk-layout-item .overlay.active{
+	opacity: 0.8;
+}
+
+.home .main .row #collectionview .ntk-layout-item .overlay .text{
+	font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+	color: white;
+	position: absolute;
+	height: auto;
+	height: 60px;
+	top: 50%;
+	margin-top: -30px;
+	padding-left: 5%;
+	padding-right: 5%;
+	width: 90%;
+	text-align: center;
+}
+
+.home .main .row #collectionview .ntk-layout-item .text h4{
+	padding: 5px;
+	font-size: 0.9em;
+	margin: 0;
+}
+
+.home .main .row .more {
+  margin-top: 6px;
+}
