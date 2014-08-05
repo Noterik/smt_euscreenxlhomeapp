@@ -51,6 +51,12 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	
 	public void initializeScreen(Screen s){
 		s.putMsg("collectionview", "app", "createGrid()");
+		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
+			loadContent(s, "footer");
+			s.putMsg("template", "", "activateTooltips()");
+		}else{
+			removeContent(s, "footer");
+		}
 	}
 	
 	public void setGridSize(Screen s, String content){
