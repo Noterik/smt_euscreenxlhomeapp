@@ -1,5 +1,5 @@
 var Template = function () {
-    Page.apply(this, arguments);
+    Component.apply(this, arguments);
     
     this.overlayButtons = jQuery('button[data-overlay]');
     this.overlayContents = jQuery('.overlaycontent');
@@ -24,7 +24,7 @@ var Template = function () {
 	})
 };
 
-Template.prototype = Object.create(Page.prototype);
+Template.prototype = Object.create(Component.prototype);
 Template.prototype.activateTooltips = function(){	
 	this.overlayButtons.tooltip();
 };

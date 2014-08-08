@@ -15,6 +15,7 @@ import org.springfield.lou.application.Html5Application;
 import org.springfield.lou.application.components.ComponentManager;
 import org.springfield.lou.application.types.conditions.EqualsCondition;
 import org.springfield.lou.application.types.conditions.FilterCondition;
+import org.springfield.lou.homer.LazyHomer;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FSListManager;
 import org.springfield.fs.Fs;
@@ -45,12 +46,22 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		this.addReferid("header", "/euscreenxlelements/header");
 		this.addReferid("footer", "/euscreenxlelements/footer");
+		this.addReferid("terms", "/euscreenxlelements/terms");
+		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		
 		allNodes = FSListManager.get(this.observingUri);
 	}
+ 	
+ 	public void initializeMode(Screen s){
+ 		if(!this.inDevelMode()){
+			s.putMsg("terms", "", "show()");
+			s.putMsg("linkinterceptor", "", "interceptLinks()");
+		}
+ 	}
 	
 	public void initializeScreen(Screen s){
 		s.putMsg("collectionview", "app", "createGrid()");
+		
 		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
 			loadContent(s, "footer");
 			s.putMsg("template", "", "activateTooltips()");
@@ -58,6 +69,10 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			removeContent(s, "footer");
 		}
 	}
+	
+	private boolean inDevelMode() {
+    	return LazyHomer.inDeveloperMode();
+    }
 	
 	public void setGridSize(Screen s, String content){
 		System.out.println("EuscreenxlhomeApplication.setGridSize(" + content + ")");
