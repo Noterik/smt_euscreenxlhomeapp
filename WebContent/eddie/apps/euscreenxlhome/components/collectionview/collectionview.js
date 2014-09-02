@@ -21,6 +21,7 @@ var Collectionview = function(options){
 };
 Collectionview.prototype = Object.create(Component.prototype);
 Collectionview.prototype.createGrid = function(){
+	$('#screen').css('visibility','hidden');
 	console.log("Collectionview.prototype.createGrid()");
 	this.currentChunk = jQuery(this.chunkContainerTemplate);
 	new noterik.layout.squared({element: this.currentChunk});
@@ -34,6 +35,7 @@ Collectionview.prototype.createGrid = function(){
 	
 	this.collectionElement.append(this.currentChunk);
 	eddie.putLou('', 'setGridSize(' + size + ')');
+	
 };
 Collectionview.prototype.appendItems = function(data){
 	console.log("Collectionview.appendItems(" + data + ")");
@@ -46,6 +48,7 @@ Collectionview.prototype.appendItems = function(data){
 	}
 	
 	this.currentChunk.data('layout').create(this.currentGrid);
+		$('#screen').css('visibility','visible');
 };
 Collectionview.prototype.endReached = function(){
 	this.showMoreButton.hide();

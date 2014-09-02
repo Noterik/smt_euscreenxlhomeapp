@@ -49,17 +49,22 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("terms", "/euscreenxlelements/terms");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		
+		System.out.println("DANIEL1: START LOADING NODES");
 		allNodes = FSListManager.get(this.observingUri);
+		System.out.println("DANIEL2: END LOADING NODES");
 	}
  	
  	public void initializeMode(Screen s){
+		System.out.println("DANIEL3: INIT MODE");
  		if(!this.inDevelMode()){
 			s.putMsg("terms", "", "show()");
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
 		}
+		System.out.println("DANIEL4: END INIT MODE");
  	}
 	
 	public void initializeScreen(Screen s){
+		System.out.println("DANIEL5: INIT SCREEN");
 		s.putMsg("collectionview", "app", "createGrid()");
 		
 		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
@@ -68,6 +73,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		}else{
 			removeContent(s, "footer");
 		}
+		System.out.println("DANIEL6: INIT SCREEN");
 	}
 	
 	private boolean inDevelMode() {
@@ -94,6 +100,10 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		Integer[] newRange = {start, stop};
 		s.setProperty("chunkRange", newRange);
 		getNextChunk(s);
+	}
+	
+	public void daniellog(Screen s){
+		System.out.println("DANIEL START ACTIONLIST");
 	}
 	
 	public void getNextChunk(Screen s){
