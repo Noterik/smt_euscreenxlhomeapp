@@ -49,6 +49,9 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("terms", "/euscreenxlelements/terms");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		
+		this.addReferidCSS("daniel", "/euscreenxlelements/generic");
+		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
+		
 		System.out.println("DANIEL1: START LOADING NODES");
 		allNodes = FSListManager.get(this.observingUri);
 		System.out.println("DANIEL2: END LOADING NODES");
@@ -56,10 +59,12 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
  	
  	public void initializeMode(Screen s){
 		System.out.println("DANIEL3: INIT MODE");
+		
  		if(!this.inDevelMode()){
 			s.putMsg("terms", "", "show()");
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
 		}
+		
 		System.out.println("DANIEL4: END INIT MODE");
  	}
 	

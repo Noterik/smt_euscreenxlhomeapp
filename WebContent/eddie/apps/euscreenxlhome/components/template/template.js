@@ -1,4 +1,5 @@
 var Template = function () {
+	$('#screen').css('visibility','hidden');
     Component.apply(this, arguments);
     
     this.overlayButtons = jQuery('button[data-overlay]');
