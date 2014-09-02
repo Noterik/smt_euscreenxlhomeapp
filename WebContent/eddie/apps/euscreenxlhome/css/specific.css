@@ -5,6 +5,9 @@
 * This file contains the generic styles for the item page. These styles should be applied on all devices,
 * but might be overwritten in specific cases for certain devices.
 */
+body .home .main {
+  padding-bottom: 0px;
+}
 .home .main .row .jumbotron {
   border-radius: 0px;
   height: 418px;
@@ -12,7 +15,7 @@
   margin-bottom: 0px;
 }
 .home .main .row .jumbotron .carousel .carousel-inner .item .bg {
-  background: url('/eddie/apps/euscreenxlelements/img/bg-home-1.gif') no-repeat;
+  background: url('/eddie/apps/euscreenxlelements/img/content/bg-home-1.gif') no-repeat;
   width: 100%;
   height: 418px;
 }
@@ -23,44 +26,74 @@
   overflow: hidden;
 }
 .home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption {
-  padding: 0px;
-  left: 7%;
-  right: 7%;
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  right: 0;
+  z-index: 0;
   text-align: left;
-  bottom: auto;
-  top: 17%;
+  position: relative;
+  height: 100%;
 }
 .home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption h1,
 .home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption p {
-  font-size: 1.8em;
+  font-size: 1.4em;
   padding: 11px 20px 15px 20px;
   margin-bottom: 0px;
   display: table;
   background: rgba(140, 198, 63, 0.7);
   font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
   text-shadow: none;
+  width: 95%;
+  line-height: 1.4em;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption h1 {
+  margin-top: 15px;
 }
 .home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption p {
   font-size: 1.071em;
   margin-top: 5px;
   padding: 14px 20px 20px 20px;
 }
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption a.link {
+  padding: 10px 30px 12px 30px;
+  font-size: 1em;
+  color: #ffffff;
+  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+  text-shadow: none;
+  border: 1px solid #fff;
+  position: absolute;
+  bottom: 58px;
+  right: 5%;
+  left: 5%;
+  text-align: center;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption a.small {
+  font-size: 1em;
+}
 .home .main .row .jumbotron .carousel .carousel-inner .item .bg-1 {
-  background: url('/eddie/apps/euscreenxlelements/img/bg-home-1.gif') no-repeat;
+  background: url('/eddie/apps/euscreenxlelements/img/content/homepage_banner_euscreen.png') no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
 .home .main .row .jumbotron .carousel .carousel-inner .item .bg-2 {
-  background: url('/eddie/apps/euscreenxlelements/img/bg-home-2.gif') no-repeat;
+  background: url('/eddie/apps/euscreenxlelements/img/content/homepage_banner_collection.png') no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
 .home .main .row .jumbotron .carousel .carousel-inner .item .bg-3 {
-  background: url('/eddie/apps/euscreenxlelements/img/bg-home-3.gif') no-repeat;
+  background: url('/eddie/apps/euscreenxlelements/img/content/homepage_banner_blog.png') no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg-4 {
+  background: url('/eddie/apps/euscreenxlelements/img/content/homepage_banner_myeuscreen.png') no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -125,6 +158,15 @@
   color: #ffffff;
   font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
 }
+.home .main .row .collection-viewer-tab .row.main-nav .tabs .nav li.inactive a {
+  color: #cccccc;
+}
+.home .main .row .collection-viewer-tab .row.main-nav .tabs .nav li.inactive a:hover,
+.home .main .row .collection-viewer-tab .row.main-nav .tabs .nav li.inactive a:visited,
+.home .main .row .collection-viewer-tab .row.main-nav .tabs .nav li.inactive a:active {
+  background: #fff;
+  cursor: not-allowed;
+}
 .home .main .row .collection-viewer-tab .row.second-nav {
   background-color: #ffffff;
   border-bottom: 5px solid #00aeef;
@@ -163,6 +205,7 @@
 }
 .home .main .row .collection-viewer .row .media-item.media-big .media-image .media-wrapper .media-title h3 {
   font-size: 1.3em;
+  font-family: 'Proxima Nova', "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .home .main .row .collection-viewer .row .media-item.media-big .media-image .media-wrapper .media-hue i {
   margin: -22px 0 0 -15px;
@@ -185,7 +228,7 @@
 }
 .fs .home .main {
   padding-top: 0px;
-  padding-bottom: 0px;
+  padding-bottom: 0px !important;
 }
 .fs .home .main .row .jumbotron {
   display: none;
