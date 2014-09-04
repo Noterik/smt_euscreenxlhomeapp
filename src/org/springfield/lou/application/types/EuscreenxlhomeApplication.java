@@ -58,11 +58,15 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	}
  	
  	public void initializeMode(Screen s){
-		System.out.println("DANIEL3: INIT MODE");
+		System.out.println("DANIEL3: INIT MODE ");
 		
  		if(!this.inDevelMode()){
+ 			System.out.println("DANIEL3b: INIT MODE ");
 			s.putMsg("terms", "", "show()");
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
+		} else {
+			s.removeContent("terms");
+			s.removeContent("linkinterceptor");
 		}
 		
 		System.out.println("DANIEL4: END INIT MODE");
