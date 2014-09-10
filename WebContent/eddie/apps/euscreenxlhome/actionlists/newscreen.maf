@@ -1,5 +1,6 @@
 .when device=desktop
-loadStylesheet(screen,generic)
+loadStylesheet(screen,bootstrap)
+loadStylesheet(screen,elements)
 loadStylesheet(screen,specific)
 loadStylesheet(screen,ntk-layout)
 loadStylesheet(screen,additions_david)
@@ -18,7 +19,8 @@ callServer(initializeMode,screen,content)
 callServer(initializeScreen,screen,content)
 
 .when device=ipad
-loadStylesheet(screen,generic)
+loadStylesheet(screen,bootstrap)
+loadStylesheet(screen,elements)
 loadStyleSheet(screen,specific)
 loadStylesheet(screen,ntk-layout)
 loadStylesheet(screen,additions_david)
@@ -36,7 +38,8 @@ callServer(initializeMode,screen,content)
 callServer(initializeScreen,screen,content)
 
 .when device=iphone
-loadStylesheet(screen,generic)
+loadStylesheet(screen,bootstrap)
+loadStylesheet(screen,elements)
 loadStylesheet(screen,specific)
 loadStylesheet(screen,ntk-layout)
 setRole(screen,"itempage")

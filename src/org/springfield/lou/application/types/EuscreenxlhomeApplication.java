@@ -49,7 +49,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("terms", "/euscreenxlelements/terms");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		
-		this.addReferidCSS("daniel", "/euscreenxlelements/generic");
+		this.addReferidCSS("elements", "/euscreenxlelements/generic");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
 		
 		System.out.println("DANIEL1: START LOADING NODES");

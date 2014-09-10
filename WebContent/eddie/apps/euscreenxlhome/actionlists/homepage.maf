@@ -5,7 +5,7 @@ setUrlTrigger(beta.euscreenxl.eu@/lou/euscreen/,/lou/domain/webtv/html5applicati
 setUrlTrigger(beta.euscreen.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
 callServer(daniellog,screen)
 loadStylesheet(screen,bootstrap)
-loadStylesheet(screen,daniel)
+loadStylesheet(screen,elements)
 loadStylesheet(screen,specific)
 loadStylesheet(screen,ntk-layout)
 loadStylesheet(screen,additions_david)
