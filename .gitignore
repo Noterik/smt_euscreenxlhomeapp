@@ -5,3 +5,5 @@ build/
 dist/
 
 *.class
+
+WebContent/WEB-INF/lib/smt_euscreenxlhomeapp.jar
