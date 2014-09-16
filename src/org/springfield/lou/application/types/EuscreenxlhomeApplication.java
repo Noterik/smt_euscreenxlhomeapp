@@ -47,6 +47,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("header", "/euscreenxlelements/header");
 		this.addReferid("footer", "/euscreenxlelements/footer");
 		this.addReferid("terms", "/euscreenxlelements/terms");
+		this.addReferid("favicon", "/euscreenxlelements/favicon");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		
 		this.addReferidCSS("elements", "/euscreenxlelements/generic");

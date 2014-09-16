@@ -1,3 +1,5 @@
+loadContent(screen,favicon)
+
 .when device=desktop
 loadStylesheet(screen,bootstrap)
 loadStylesheet(screen,elements)
@@ -21,7 +23,7 @@ callServer(initializeScreen,screen,content)
 .when device=ipad
 loadStylesheet(screen,bootstrap)
 loadStylesheet(screen,elements)
-loadStyleSheet(screen,specific)
+loadStylesheet(screen,specific)
 loadStylesheet(screen,ntk-layout)
 loadStylesheet(screen,additions_david)
 setRole(screen,"itempage")
