@@ -17,7 +17,6 @@ var Collectionview = function(options){
 		self.createGrid();
 	});
 	
-	
 };
 Collectionview.prototype = Object.create(Component.prototype);
 Collectionview.prototype.createGrid = function(){
@@ -43,7 +42,16 @@ Collectionview.prototype.appendItems = function(data){
 	
 	for(var i = 0; i < items.length; i++){
 		var item = items[i];
-		this.currentChunk.append(_.template(this.itemTemplate, {item: item}));
+		var itemElement = jQuery(_.template(this.itemTemplate, {item: item}));
+		console.log(item);
+		itemElement.on('click', 
+			(function(item){
+				return function(){
+					eddie.putLou("", "playVideo(" + item.id + ")");
+				}
+			})(item)
+		);
+		this.currentChunk.append(itemElement);
 	}
 	
 	this.currentChunk.data('layout').create(this.currentGrid);

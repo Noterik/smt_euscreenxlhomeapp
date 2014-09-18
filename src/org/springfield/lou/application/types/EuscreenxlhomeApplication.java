@@ -11,6 +11,7 @@ import java.util.Observer;
 import org.dom4j.Node;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springfield.lou.application.Html5Application;
 import org.springfield.lou.application.components.ComponentManager;
 import org.springfield.lou.application.types.conditions.EqualsCondition;
@@ -53,16 +54,12 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferidCSS("elements", "/euscreenxlelements/generic");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
 		
-		System.out.println("DANIEL1: START LOADING NODES");
 		allNodes = FSListManager.get(this.observingUri);
-		System.out.println("DANIEL2: END LOADING NODES");
 	}
  	
  	public void initializeMode(Screen s){
-		System.out.println("DANIEL3: INIT MODE ");
 		
  		if(!this.inDevelMode()){
- 			System.out.println("DANIEL3b: INIT MODE ");
 			s.putMsg("terms", "", "show()");
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
 		} else {
@@ -70,11 +67,9 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			s.removeContent("linkinterceptor");
 		}
 		
-		System.out.println("DANIEL4: END INIT MODE");
  	}
 	
 	public void initializeScreen(Screen s){
-		System.out.println("DANIEL5: INIT SCREEN");
 		s.putMsg("collectionview", "app", "createGrid()");
 		
 		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
@@ -83,7 +78,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		}else{
 			removeContent(s, "footer");
 		}
-		System.out.println("DANIEL6: INIT SCREEN");
+		s.putMsg("header", "", "setActivePage(home)");
 	}
 	
 	private boolean inDevelMode() {
@@ -113,7 +108,6 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	}
 	
 	public void daniellog(Screen s){
-		System.out.println("DANIEL START ACTIONLIST");
 	}
 	
 	public void getNextChunk(Screen s){
@@ -145,11 +139,12 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 		for(Iterator<FsNode> i = nodes.iterator(); i.hasNext();){
 			FsNode node = i.next();
+			System.out.println(node.asXML());
 			JSONObject item = new JSONObject();
 			item.put("id", node.getId());
-			item.put("title", node.getProperty("title"));
+			item.put("title", org.springfield.fs.FsEncoding.decode(node.getProperty("title")));
 			item.put("screenshot", node.getProperty("screenshot"));
-			item.put("description", node.getProperty("description"));
+			item.put("description", org.springfield.fs.FsEncoding.decode(node.getProperty("description")));
 			objectToSend.add(item);
 		}
 		s.putMsg("collectionview", "app", "appendItems(" + objectToSend + ")");
@@ -177,18 +172,35 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		}
 	}
 	
-	public void playVideo(Screen s, JSONObject params){
-		System.out.println("CollectionrutgerApplication.playVideo()");
-		String path = (String) params.get("path");
-		String fullPath = this.observingUri + "/" +path + "/rawvideo/1";
-		FsNode node = Fs.getNode(fullPath);
-		String mount = node.getProperty("mount");
-		String[] splits = mount.split(",");
+	public void playVideo(Screen s, String path){
+		System.out.println("CollectionrutgerApplication.playVideo(" +  path + ")");
+		String videoPath = this.observingUri + "/" + path;
+		String rawVideoPath = videoPath + "/rawvideo/1";
+		FsNode video = Fs.getNode(videoPath);
+		FsNode rawvideo = Fs.getNode(rawVideoPath);
 		
-		JSONObject message = new JSONObject();
-		message.put("video", splits[0]);
+		String title = org.springfield.fs.FsEncoding.decode(video.getProperty("description"));
+		String mount = rawvideo.getProperty("mount");
+		String poster = video.getProperty("screenshot");
+		String[] splits = mount.split(",");		
 		
-		String command = "setVideo(" + message + ")";
-		s.putMsg("playeroverlay", "", command);
+		JSONObject posterMessage = new JSONObject();
+		posterMessage.put("poster", poster);
+		
+		JSONObject titleMessage = new JSONObject();
+		titleMessage.put("title", title);
+		
+		JSONObject videoMessage = new JSONObject();
+		videoMessage.put("video", splits[0]);
+		
+		System.out.println("TITLE MESSAGE: ");
+		System.out.println(titleMessage);
+		
+		System.out.println("VIDEO MESSAGE: ");
+		System.out.println(videoMessage);
+		
+		s.putMsg("player", "app", "setPoster(" + posterMessage + ")");
+		s.putMsg("player", "app", "setTitle(" + titleMessage + ")");
+		s.putMsg("player", "app", "setVideo(" + videoMessage + ")");
 	}
 }

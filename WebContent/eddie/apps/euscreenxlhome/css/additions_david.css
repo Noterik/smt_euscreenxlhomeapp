@@ -8,3 +8,7 @@
 .media-wrapper{
 	position: inherit;
 }
+
+#player .modal-dialog{
+	width: 640px;
+}
