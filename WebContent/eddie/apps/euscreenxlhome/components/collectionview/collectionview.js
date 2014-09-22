@@ -36,14 +36,12 @@ Collectionview.prototype.createGrid = function(){
 	
 };
 Collectionview.prototype.appendItems = function(data){
-	console.log("Collectionview.appendItems(" + data + ")");
 	
 	var items = JSON.parse(data);
 	
 	for(var i = 0; i < items.length; i++){
 		var item = items[i];
 		var itemElement = jQuery(_.template(this.itemTemplate, {item: item}));
-		console.log(item);
 		itemElement.on('click', 
 			(function(item){
 				return function(){
@@ -54,9 +52,12 @@ Collectionview.prototype.appendItems = function(data){
 		this.currentChunk.append(itemElement);
 	}
 	
+	if(eddie.getComponent('tabletcollectionview'))
+		eddie.putLou('tabletcollectionview', 'unlock()');
+	
 	this.currentChunk.data('layout').create(this.currentGrid);
 	$('#screen').css('visibility','visible');
 };
 Collectionview.prototype.endReached = function(){
-	this.showMoreButton.hide();
+	jQuery('body .row .more').hide();
 };

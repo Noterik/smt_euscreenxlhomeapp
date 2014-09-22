@@ -47,9 +47,9 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		this.addReferid("header", "/euscreenxlelements/header");
 		this.addReferid("footer", "/euscreenxlelements/footer");
-		this.addReferid("terms", "/euscreenxlelements/terms");
 		this.addReferid("favicon", "/euscreenxlelements/favicon");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
+		this.addReferid("warning", "/euscreenxlelements/warning");
 		
 		this.addReferidCSS("elements", "/euscreenxlelements/generic");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
@@ -58,15 +58,11 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	}
  	
  	public void initializeMode(Screen s){
-		
  		if(!this.inDevelMode()){
-			s.putMsg("terms", "", "show()");
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
 		} else {
-			s.removeContent("terms");
 			s.removeContent("linkinterceptor");
 		}
-		
  	}
 	
 	public void initializeScreen(Screen s){

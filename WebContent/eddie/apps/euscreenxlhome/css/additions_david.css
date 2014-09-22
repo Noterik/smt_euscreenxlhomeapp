@@ -12,3 +12,14 @@
 #player .modal-dialog{
 	width: 640px;
 }
+
+.more.loading{
+	background: url(/eddie/apps/euscreenxlelements/img/spinner.gif);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-color: #ffffff;
+}
+
+.more.loading a{
+	display: none;
+}
