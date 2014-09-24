@@ -8,6 +8,7 @@ var Collectionview = function(options){
 	this.itemTemplate = this.element.find('#item-template').text();
 	this.chunkContainerTemplate = jQuery('#chunk-template').text();
 	this.showMoreButton = jQuery('body .row .more a');
+	this.lock = false;
 	
 	this.currentChunk = null;
 	this.currentGrid = null;
@@ -16,9 +17,31 @@ var Collectionview = function(options){
 		event.preventDefault();
 		self.createGrid();
 	});
-	
 };
 Collectionview.prototype = Object.create(Component.prototype);
+Collectionview.prototype.device = "desktop";
+Collectionview.prototype.setDevice = function(device){
+	var self = this;
+	console.log("setDevice(" + device + ")");
+	this.device = device;
+	if(device == "tablet"){
+		jQuery(".more a").remove();
+		jQuery(".more").addClass('loading')
+		
+		jQuery(window).on('scroll', function(){
+			if(!self.lock){
+				var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
+				var difference = _docHeight - jQuery(window).scrollTop();
+				var wHeight = jQuery(window).height();
+				
+				if((difference / 2) <= wHeight){
+					self.lock = true;
+					self.createGrid();
+				}
+			}
+		});
+	}
+};
 Collectionview.prototype.createGrid = function(){
 	console.log("Collectionview.prototype.createGrid()");
 	this.currentChunk = jQuery(this.chunkContainerTemplate);
@@ -36,7 +59,7 @@ Collectionview.prototype.createGrid = function(){
 	
 };
 Collectionview.prototype.appendItems = function(data){
-	
+	var self = this;
 	var items = JSON.parse(data);
 	
 	for(var i = 0; i < items.length; i++){
@@ -45,16 +68,23 @@ Collectionview.prototype.appendItems = function(data){
 		itemElement.on('click', 
 			(function(item){
 				return function(){
-					eddie.putLou("", "playVideo(" + item.id + ")");
+					if(self.device != "tablet"){
+						eddie.putLou("", "playVideo(" + item.id + ")");
+					}else{
+						if(jQuery(this).data('touched')) {
+		                    eddie.putLou("", "playVideo(" + item.id + ")");
+		                }else{
+		                	self.element.find('.media-item').data('touched', false);
+		                	jQuery(this).data('touched', true);
+		                }
+					}
 				}
 			})(item)
 		);
 		this.currentChunk.append(itemElement);
 	}
 	
-	if(eddie.getComponent('tabletcollectionview'))
-		eddie.putLou('tabletcollectionview', 'unlock()');
-	
+	this.lock = false;
 	this.currentChunk.data('layout').create(this.currentGrid);
 	$('#screen').css('visibility','visible');
 };

@@ -47,7 +47,6 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		this.addReferid("header", "/euscreenxlelements/header");
 		this.addReferid("footer", "/euscreenxlelements/footer");
-		this.addReferid("favicon", "/euscreenxlelements/favicon");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		this.addReferid("warning", "/euscreenxlelements/warning");
 		
@@ -56,6 +55,10 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 		allNodes = FSListManager.get(this.observingUri);
 	}
+ 	
+ 	 public String getFavicon() {
+         return "/eddie/apps/euscreenxlelements/img/favicon.png";
+     }
  	
  	public void initializeMode(Screen s){
  		if(!this.inDevelMode()){
@@ -75,6 +78,10 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			removeContent(s, "footer");
 		}
 		s.putMsg("header", "", "setActivePage(home)");
+	}
+	
+	public void setDeviceTablet(Screen s){
+		s.putMsg("collectionview", "app", "setDevice(tablet)");
 	}
 	
 	private boolean inDevelMode() {

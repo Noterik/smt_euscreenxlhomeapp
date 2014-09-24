@@ -22,7 +22,8 @@ var Template = function () {
                 overlayContents.not($(content)).hide();
             }
         });
-	})
+	});
+	
 };
 
 Template.prototype = Object.create(Component.prototype);
