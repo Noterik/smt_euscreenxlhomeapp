@@ -1,13 +1,13 @@
-var Collectionview = function(options){
+var Collectionviewer = function(options){
 	var self = this;
 	console.log("Collectionview()");
 	Component.apply(this, arguments);
 	
-	this.element = jQuery('#collectionview');
+	this.element = jQuery('#collectionviewer');
 	this.collectionElement = this.element.find('.items');
 	this.itemTemplate = this.element.find('#item-template').text();
 	this.chunkContainerTemplate = jQuery('#chunk-template').text();
-	this.showMoreButton = jQuery('body .row .more a');
+	this.showMoreButton = this.element.find('.more');
 	this.lock = false;
 	
 	this.currentChunk = null;
@@ -18,15 +18,15 @@ var Collectionview = function(options){
 		self.createGrid();
 	});
 };
-Collectionview.prototype = Object.create(Component.prototype);
-Collectionview.prototype.device = "desktop";
-Collectionview.prototype.setDevice = function(device){
+Collectionviewer.prototype = Object.create(Component.prototype);
+Collectionviewer.prototype.device = "desktop";
+Collectionviewer.prototype.setDevice = function(device){
 	var self = this;
 	console.log("setDevice(" + device + ")");
 	this.device = device;
 	if(device == "tablet"){
-		jQuery(".more a").remove();
-		jQuery(".more").addClass('loading')
+		this.showMoreButton.find('a').remove();
+		this.showMoreButton.addClass('loading')
 		
 		jQuery(window).on('scroll', function(){
 			if(!self.lock){
@@ -42,8 +42,8 @@ Collectionview.prototype.setDevice = function(device){
 		});
 	}
 };
-Collectionview.prototype.createGrid = function(){
-	console.log("Collectionview.prototype.createGrid()");
+Collectionviewer.prototype.createGrid = function(){
+	console.log("Collectionviewer.prototype.createGrid()");
 	this.currentChunk = jQuery(this.chunkContainerTemplate);
 	new noterik.layout.squared({element: this.currentChunk});
 	this.currentGrid = this.currentChunk.data('layout').createGrid(4);
@@ -58,7 +58,7 @@ Collectionview.prototype.createGrid = function(){
 	eddie.putLou('', 'setGridSize(' + size + ')');
 	
 };
-Collectionview.prototype.appendItems = function(data){
+Collectionviewer.prototype.appendItems = function(data){
 	var self = this;
 	var items = JSON.parse(data);
 	
@@ -88,6 +88,6 @@ Collectionview.prototype.appendItems = function(data){
 	this.currentChunk.data('layout').create(this.currentGrid);
 	$('#screen').css('visibility','visible');
 };
-Collectionview.prototype.endReached = function(){
-	jQuery('body .row .more').hide();
+Collectionviewer.prototype.endReached = function(){
+	this.showMoreButton.hide();
 };

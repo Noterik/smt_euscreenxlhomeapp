@@ -26,7 +26,7 @@ import org.springfield.lou.screen.Screen;
 public class EuscreenxlhomeApplication extends Html5Application implements Observer{
 
 	private FSList allNodes;
-	private String observingUri = "/domain/springfieldwebtv/user/david/video";
+	private String observingUri = "/domain/euscreenxl/user/eu_agency/collection/highlights/teaser";
 	
 	private Comparator<Node> titleComparator = new Comparator<Node>(){
 		@Override
@@ -49,6 +49,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("footer", "/euscreenxlelements/footer");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		this.addReferid("warning", "/euscreenxlelements/warning");
+		this.addReferid("videocopyright", "/euscreenxlelements/videocopyright");
 		
 		this.addReferidCSS("elements", "/euscreenxlelements/generic");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
@@ -69,7 +70,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
  	}
 	
 	public void initializeScreen(Screen s){
-		s.putMsg("collectionview", "app", "createGrid()");
+		s.putMsg("collectionviewer", "app", "createGrid()");
 		
 		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
 			loadContent(s, "footer");
@@ -81,7 +82,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	}
 	
 	public void setDeviceTablet(Screen s){
-		s.putMsg("collectionview", "app", "setDevice(tablet)");
+		s.putMsg("collectionviewer", "app", "setDevice(tablet)");
 	}
 	
 	private boolean inDevelMode() {
@@ -117,6 +118,9 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		Integer[] range = (Integer[]) s.getProperty("chunkRange");
 		
 		List<FsNode> nodes = allNodes.getNodes();
+		
+		System.out.println("SIZE:");
+		System.out.println(nodes.size());
 		if(s.getProperty("filter") != null){
 			Filter filter = (Filter) s.getProperty("filter");
 			nodes = filter.apply(nodes);
@@ -125,15 +129,13 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		int start = range[0];
 		int stop = range[1];
 		
-		if(start != 0){
-			stop += 1;
-		}
-		
 		if(stop >= nodes.size()){
-			if(stop > nodes.size()){
+			if(stop > nodes.size() && nodes.size() > 1){
 				stop = nodes.size() - 1;
+			}else{
+				stop = 1;
 			}
-			s.putMsg("collectionview", "app", "endReached()");
+			s.putMsg("collectionviewer", "app", "endReached()");
 		}
 		
 		nodes = nodes.subList(start, stop);
@@ -147,10 +149,10 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			item.put("id", node.getId());
 			item.put("title", org.springfield.fs.FsEncoding.decode(node.getProperty("title")));
 			item.put("screenshot", node.getProperty("screenshot"));
-			item.put("description", org.springfield.fs.FsEncoding.decode(node.getProperty("description")));
+			item.put("description", org.springfield.fs.FsEncoding.decode(node.getProperty("title")));
 			objectToSend.add(item);
 		}
-		s.putMsg("collectionview", "app", "appendItems(" + objectToSend + ")");
+		s.putMsg("collectionviewer", "app", "appendItems(" + objectToSend + ")");
 	}
 	
 	public void setTopic(Screen s, String topic){
@@ -159,7 +161,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		filter.addCondition(condition);
 		s.setProperty("filter", filter);
 		s.setProperty("chunkRange", null);
-		s.putMsg("collectionview", "app", "createGrid()");
+		s.putMsg("collectionviewer", "app", "createGrid()");
 		getNextChunk(s);
 	}
 	
@@ -177,12 +179,14 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	
 	public void playVideo(Screen s, String path){
 		System.out.println("CollectionrutgerApplication.playVideo(" +  path + ")");
-		String videoPath = this.observingUri + "/" + path;
+		String teaserPath = this.observingUri + "/" + path;
+		FsNode teaser = Fs.getNode(teaserPath);
+		String videoPath = teaser.getProperty("basedon").replace("'", "");
 		String rawVideoPath = videoPath + "/rawvideo/1";
 		FsNode video = Fs.getNode(videoPath);
 		FsNode rawvideo = Fs.getNode(rawVideoPath);
-		
-		String title = org.springfield.fs.FsEncoding.decode(video.getProperty("description"));
+				
+		String title = org.springfield.fs.FsEncoding.decode(teaser.getProperty("title"));
 		String mount = rawvideo.getProperty("mount");
 		String poster = video.getProperty("screenshot");
 		String[] splits = mount.split(",");		
@@ -195,12 +199,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 		JSONObject videoMessage = new JSONObject();
 		videoMessage.put("video", splits[0]);
-		
-		System.out.println("TITLE MESSAGE: ");
-		System.out.println(titleMessage);
-		
-		System.out.println("VIDEO MESSAGE: ");
-		System.out.println(videoMessage);
+
 		
 		s.putMsg("player", "app", "setPoster(" + posterMessage + ")");
 		s.putMsg("player", "app", "setTitle(" + titleMessage + ")");

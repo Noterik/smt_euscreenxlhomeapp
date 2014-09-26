@@ -30,3 +30,17 @@
 .more.loading a{
 	display: none;
 }
+
+.home .main .row .collection-viewer .row .media-item.media-big .media-wrapper .media-title h3 {
+  font-size: 1.3em;
+  font-family: 'Proxima Nova', Helvetica, Arial, sans-serif;
+}
+.home .main .row .collection-viewer .row .media-item.media-big .media-wrapper .media-hue i {
+  margin: -22px 0 0 -15px;
+  font-size: 1.7em;
+}
+.home .main .row .collection-viewer .row .media-item .media-wrapper a:hover .media-hue,
+.home .main .row .collection-viewer .row .media-item .media-wrapper a:hover .media-title {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
