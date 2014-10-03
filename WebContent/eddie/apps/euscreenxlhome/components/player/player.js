@@ -24,3 +24,9 @@ Player.prototype.setPoster = function(data){
 	var params = JSON.parse(data);
 	this.element.find('video').attr('poster', params.poster);
 };
+Player.prototype.setLink = function(data){
+	console.log("Player.prototype.setLink(" + data + ")");
+	var params = JSON.parse(data);
+	
+	jQuery('#visit-item-page').attr('href', '/item.html?id=' + params.id);
+};

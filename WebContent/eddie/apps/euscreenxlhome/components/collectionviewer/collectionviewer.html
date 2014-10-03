@@ -11,6 +11,30 @@
         </div>
     </div>
 </script>
+<script type="text/template" id="video-highlights-text">
+	<h3>Video Highlights</h3>
+	<p>
+	    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore 
+	    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Dolore 
+	    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+	</p>
+</script>
+<script type="text/template" id="in-the-news-text">
+	<h3>In The News</h3>
+	<p>
+	    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore 
+	    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Dolore 
+	    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+	</p>
+</script>
+<script type="text/template" id="series-picks-text">
+	<h3>Series Picks</h3>
+	<p>
+	    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore 
+	    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Dolore 
+	    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+	</p>
+</script>
 <script type="text/template" id="chunk-template">
     <div class="item-chunk" data-ntk-gutter="6">
     	
@@ -18,7 +42,7 @@
 </script>
 
 <!-- row -->
-<div class="row hidden-xs">
+<div id="collection-viewer-element" class="row hidden-xs">
     <div class="col-md-12 collection-viewer-tab">
         
         <!-- row -->
@@ -37,13 +61,20 @@
             <div class="col-md-3 col-sm-4 col-cs-8 media-action">
             	<ul class="list-inline pull-right button-list">
             		<li>
-                		<button class="no-prod" data-toggle="tooltip" data-placement="top" data-title="INFO" data-overlay="#terms-content">
+                		<button class="no-prod" data-toggle="tooltip" data-placement="top" data-title="INFO" data-overlay="#info-content">
 							<i class="icono icono-info"></i>
 						</button>
+						<div class="overlaycontent" id="info-content">
+						</div>
             		</li>
-            		<li>
+            		<li class="go-fullscreen">
                 		<button id="go-fullscreen" data-toggle="tooltip" data-placement="top" data-title="EXPAND TO FULLSCREEN" data-overlay="#terms-content">
 							<i class="icono icono-expand"></i>
+						</button>
+            		</li>
+            		<li class="exit-fullscreen">
+                		<button id="exit-fullscreen" data-toggle="tooltip" data-placement="top" data-title="EXIT FULLSCREEN" id="exitfullscreen-button" data-original-title="" title="">
+							<i class="icono icono-minimize"></i>
 						</button>
             		</li>
             	</ul>

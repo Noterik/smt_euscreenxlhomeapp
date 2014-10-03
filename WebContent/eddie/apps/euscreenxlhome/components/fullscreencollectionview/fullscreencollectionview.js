@@ -4,11 +4,7 @@ var Fullscreencollectionview = function(options){
 	
 	this.element = jQuery("#fullscreencollectionview");
 	
-	this.fullscreenButton = jQuery('#go-fullscreen');	
-	this.fullscreenButton.on('click', function(){
-		self.element.css('display', 'block');
-		self.goFullScreen();
-	});
+	
 };
 Fullscreencollectionview.prototype = Object.create(Component.prototype);
 Fullscreencollectionview.prototype.goFullScreen = function(){

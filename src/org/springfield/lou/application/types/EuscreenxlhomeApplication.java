@@ -68,6 +68,10 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			s.removeContent("linkinterceptor");
 		}
  	}
+ 	
+ 	public void initTooltips(Screen s){
+ 		s.putMsg("collectionviewer", "", "initTooltips()");
+ 	}
 	
 	public void initializeScreen(Screen s){
 		s.putMsg("collectionviewer", "app", "createGrid()");
@@ -112,6 +116,10 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	}
 	
 	public void daniellog(Screen s){
+	}
+	
+	public void fullscreenChanged(Screen s){
+		s.setProperty("chunkRange", null);
 	}
 	
 	public void getNextChunk(Screen s){
@@ -199,10 +207,13 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 		JSONObject videoMessage = new JSONObject();
 		videoMessage.put("video", splits[0]);
-
+		
+		JSONObject linkMessage = new JSONObject();
+		linkMessage.put("id", video.getId());
 		
 		s.putMsg("player", "app", "setPoster(" + posterMessage + ")");
 		s.putMsg("player", "app", "setTitle(" + titleMessage + ")");
 		s.putMsg("player", "app", "setVideo(" + videoMessage + ")");
+		s.putMsg("player", "app", "setLink(" + linkMessage + ")");
 	}
 }

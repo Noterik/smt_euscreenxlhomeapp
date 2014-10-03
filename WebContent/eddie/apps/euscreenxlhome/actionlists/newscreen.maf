@@ -20,6 +20,7 @@ loadContent(screen,linkinterceptor)
 loadContent(screen,player)
 callServer(initializeMode,screen,content)
 callServer(initializeScreen,screen,content)
+callServer(initTooltips,screen,content)
 
 .when device=ipad
 loadStylesheet(screen,bootstrap)

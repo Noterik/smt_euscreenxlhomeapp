@@ -9,6 +9,7 @@ var Collectionviewer = function(options){
 	this.chunkContainerTemplate = jQuery('#chunk-template').text();
 	this.showMoreButton = this.element.find('.more');
 	this.lock = false;
+	this.gridSize = 4;
 	
 	this.currentChunk = null;
 	this.currentGrid = null;
@@ -17,9 +18,39 @@ var Collectionviewer = function(options){
 		event.preventDefault();
 		self.createGrid();
 	});
+	
+	this.fullscreenButton = jQuery('#go-fullscreen');	
+	this.fullscreenButton.on('click', function(){
+		self.element.css('display', 'block');
+		self.goFullScreen();
+	});
+	
+	this.exitFullscreenButton = jQuery('#exit-fullscreen');
+	this.exitFullscreenButton.on('click', function(){
+		self.leaveFullScreen();
+	});
+	
+	this.infoContent = jQuery("#info-content");
+	
+	this.element.find('ul.nav-tabs li a').on('click', function(){
+		var id = jQuery(this).attr('href');
+		self.infoContent.html(jQuery(id + "-text").html());
+	});
+	
+	var currentlyActiveTabId = jQuery('ul.nav-tabs li a').attr('href');
+	this.infoContent.html(jQuery(currentlyActiveTabId + '-text').html());
+	
+	jQuery('button[data-overlay]').popupOverlayJS({
+		$overlayContents : jQuery('.overlaycontent'),
+		contentOverlayIdAttr : 'data-overlay'
+	});
 };
 Collectionviewer.prototype = Object.create(Component.prototype);
 Collectionviewer.prototype.device = "desktop";
+Collectionviewer.prototype.initTooltips = function(){
+	console.log("Collectionviewer.initTooltips()");
+	this.element.find('button[data-toggle]').tooltip();
+};
 Collectionviewer.prototype.setDevice = function(device){
 	var self = this;
 	console.log("setDevice(" + device + ")");
@@ -45,8 +76,13 @@ Collectionviewer.prototype.setDevice = function(device){
 Collectionviewer.prototype.createGrid = function(){
 	console.log("Collectionviewer.prototype.createGrid()");
 	this.currentChunk = jQuery(this.chunkContainerTemplate);
+	this.currentChunk.attr('data-ntk-columns', this.gridSize);
 	new noterik.layout.squared({element: this.currentChunk});
-	this.currentGrid = this.currentChunk.data('layout').createGrid(4);
+	console.log("GRID SIZE: " + this.gridSize);
+	
+	this.currentGrid = this.currentChunk.data('layout').createGrid(this.gridSize);
+	
+	console.log(this.currentGrid);
 	var size = 0;
 	
 	for(var i = 0; i < this.currentGrid.length; i++){
@@ -90,4 +126,69 @@ Collectionviewer.prototype.appendItems = function(data){
 };
 Collectionviewer.prototype.endReached = function(){
 	this.showMoreButton.hide();
+};
+Collectionviewer.prototype.leaveFullScreen = function(){
+	if(this.device != "tablet"){
+		if(document.webkitExitFullscreen) {
+		    document.webkitExitFullscreen();
+		} else if(document.mozCancelFullScreen) {
+		    document.mozCancelFullScreen();
+		} else if(document.exitFullscreen) {
+		    document.exitFullscreen();
+		} else if(document.msExitFullscreen) {
+		    document.msExitFullscreen();
+		}
+	}else{
+		eddie.putLou('', 'fullscreenChanged()');
+		this.element.removeClass('fullscreentablet');
+		self.collectionElement.html('');
+		self.gridSize = 4;
+		self.createGrid();
+	}
+};
+Collectionviewer.prototype.goFullScreen = function(){
+	var self = this;
+	var element = this.element[0];
+	
+	if(this.device != "tablet"){
+		this.element.on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(event){
+			
+			jQuery(this).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
+			eddie.putLou('', 'fullscreenChanged()');
+			self.collectionElement.html('');
+			self.gridSize = 8;
+			self.createGrid();
+			
+			var element = this;
+					
+			//Weird hack for this, event is triggered twice after each other in some browser because they support both the prefixed and the none-prefixed event.
+			//So I start listening after the second event has triggered.
+			setTimeout(function(){
+				jQuery(element).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(event){
+					jQuery(element).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
+					eddie.putLou('', 'fullscreenChanged()');
+					self.collectionElement.html('');
+					self.gridSize = 4;
+					self.createGrid();
+				});
+			}, 1);
+			
+		});
+		
+		if(element.requestFullscreen) {
+			element.requestFullscreen();
+		} else if(element.mozRequestFullScreen) {
+		    element.mozRequestFullScreen();
+		} else if(element.webkitRequestFullscreen) {
+		    element.webkitRequestFullscreen();
+		} else if(element.msRequestFullscreen) {
+			element.msRequestFullscreen();
+		}
+	}else{
+		this.element.addClass('fullscreentablet');
+		eddie.putLou('', 'fullscreenChanged()');
+		self.collectionElement.html('');
+		self.gridSize = 4;
+		self.createGrid();
+	}
 };

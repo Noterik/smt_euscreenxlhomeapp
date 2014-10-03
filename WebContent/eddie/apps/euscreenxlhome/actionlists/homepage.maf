@@ -26,6 +26,7 @@ loadContent(screen,player)
 loadContent(screen,fullscreencollectionview)
 callServer(initializeMode,screen,content)
 callServer(initializeScreen,screen,content)
+callServer(initTooltips,screen,content)
 
 .when device=ipad
 callServer(daniellog,screen)
