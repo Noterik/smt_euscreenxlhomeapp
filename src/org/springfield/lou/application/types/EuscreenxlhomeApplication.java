@@ -53,8 +53,6 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 		this.addReferidCSS("elements", "/euscreenxlelements/generic");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
-		
-		allNodes = FSListManager.get(this.observingUri);
 	}
  	
  	 public String getFavicon() {
@@ -74,6 +72,8 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
  	}
 	
 	public void initializeScreen(Screen s){
+		allNodes = FSListManager.get(this.observingUri);
+		
 		s.putMsg("collectionviewer", "app", "createGrid()");
 		
 		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
@@ -127,8 +127,13 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 		List<FsNode> nodes = allNodes.getNodes();
 		
-		System.out.println("SIZE:");
-		System.out.println(nodes.size());
+		if(!this.inDevelMode()){ // Production mode
+			Filter approvedFilter = new Filter();
+			EqualsCondition condition = new EqualsCondition("public", "true");
+			approvedFilter.addCondition(condition);
+			nodes = approvedFilter.apply(nodes);
+		}
+		
 		if(s.getProperty("filter") != null){
 			Filter filter = (Filter) s.getProperty("filter");
 			nodes = filter.apply(nodes);
