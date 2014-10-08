@@ -26,6 +26,7 @@ import org.springfield.lou.screen.Screen;
 public class EuscreenxlhomeApplication extends Html5Application implements Observer{
 
 	private FSList allNodes;
+	private static Boolean wantedna = true;
 	private String observingUri = "/domain/euscreenxl/user/eu_agency/collection/highlights/teaser";
 	
 	private Comparator<Node> titleComparator = new Comparator<Node>(){
@@ -170,7 +171,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			JSONObject item = new JSONObject();
 			item.put("id", node.getId());
 			item.put("title", org.springfield.fs.FsEncoding.decode(node.getProperty("title")));
-			item.put("screenshot", node.getProperty("screenshot"));
+			item.put("screenshot", setEdnaMapping(node.getProperty("screenshot")));
 			item.put("description", org.springfield.fs.FsEncoding.decode(node.getProperty("title")));
 			objectToSend.add(item);
 		}
@@ -210,7 +211,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 				
 		String title = org.springfield.fs.FsEncoding.decode(teaser.getProperty("title"));
 		String mount = rawvideo.getProperty("mount");
-		String poster = video.getProperty("screenshot");
+		String poster = setEdnaMapping(video.getProperty("screenshot"));
 		String[] splits = mount.split(",");		
 		
 		JSONObject posterMessage = new JSONObject();
@@ -229,5 +230,18 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		s.putMsg("player", "app", "setTitle(" + titleMessage + ")");
 		s.putMsg("player", "app", "setVideo(" + videoMessage + ")");
 		s.putMsg("player", "app", "setLink(" + linkMessage + ")");
+	}
+	
+	public String setEdnaMapping(String screenshot) {
+		if (!wantedna) {
+			screenshot = screenshot.replace("edna/", "");
+		} else {
+			int pos = screenshot.indexOf("edna/");
+			if 	(pos!=-1) {
+				screenshot = "http://images.euscreenxl.eu/"+screenshot.substring(pos+5);
+			}
+		}
+		screenshot +="?script=euscreen320t";
+		return screenshot;
 	}
 }
