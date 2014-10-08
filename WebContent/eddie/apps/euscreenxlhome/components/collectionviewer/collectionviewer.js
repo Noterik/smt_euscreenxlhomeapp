@@ -32,12 +32,17 @@ var Collectionviewer = function(options){
 	
 	this.infoContent = jQuery("#info-content");
 	
-	console.log("HOI 2234234234");
-	this.element.find('ul.nav-tabs li a').on('click', function(event){
-		self.categoryChanged.apply(self, [event]);
+	this.element.find('a[data-toggle="tab"]').on('shown.bs.tab', function(event){
+		self.selectionChanged.apply(self, [event]);
 	});
 	
-	this.categoryChanged();
+	this.element.find('.subcats a').on('click', function(event){
+		this.element.find('.subcats li.active').removeClass('active');
+		jQuery(this).parent().addClass('active');
+		self.selectionChanged.apply(self, [event]);
+	});
+	
+	this.selectionChanged();
 	
 	jQuery('button[data-overlay]').popupOverlayJS({
 		$overlayContents : jQuery('.overlaycontent'),
@@ -46,9 +51,15 @@ var Collectionviewer = function(options){
 };
 Collectionviewer.prototype = Object.create(Component.prototype);
 Collectionviewer.prototype.device = "desktop";
-Collectionviewer.prototype.categoryChanged = function(event){
-	var currentlyActiveTabId = jQuery('ul.nav-tabs li.active a').attr('href');
-	this.infoContent.html(jQuery(currentlyActiveTabId + '-text').html());
+Collectionviewer.prototype.selectionChanged = function(event){
+	this.currentlyActiveCategory = jQuery('ul.nav-tabs li.active a').attr('href');
+	this.infoContent.html(jQuery(this.currentlyActiveCategory + '-text').html());
+	
+	this.currentlyActiveCategory.replace("#", "");
+	this.currentlyActiveSubCategory = this.element.find('.subcats li.active a').data('topic');
+	
+	console.log("ACTIVE CATEGORY: " + this.currentlyActiveCategory);
+	console.log("ACTIVE SUBCATEGORY: " + this.currentlyActiveSubCategory);
 };
 Collectionviewer.prototype.initTooltips = function(){
 	console.log("Collectionviewer.initTooltips()");

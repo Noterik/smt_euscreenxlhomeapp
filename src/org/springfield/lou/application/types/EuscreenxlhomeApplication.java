@@ -72,7 +72,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
  	}
 	
 	public void initializeScreen(Screen s){
-		allNodes = FSListManager.get(this.observingUri);
+		allNodes = FSListManager.get(this.observingUri, false);
 		
 		s.putMsg("collectionviewer", "app", "createGrid()");
 		
@@ -127,6 +127,15 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 		List<FsNode> nodes = allNodes.getNodes();
 		
+		Iterator<FsNode> ii = nodes.iterator();
+		
+		while(ii.hasNext()){
+			FsNode node = ii.next();
+			System.out.println("--------NODE------------");
+			System.out.println(node.asXML());
+			System.out.println("-------/NODE------------");
+		}
+				
 		if(!this.inDevelMode()){ // Production mode
 			Filter approvedFilter = new Filter();
 			EqualsCondition condition = new EqualsCondition("public", "true");
