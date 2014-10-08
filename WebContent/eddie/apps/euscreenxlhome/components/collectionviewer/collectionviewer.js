@@ -32,13 +32,12 @@ var Collectionviewer = function(options){
 	
 	this.infoContent = jQuery("#info-content");
 	
-	this.element.find('ul.nav-tabs li a').on('click', function(){
-		var id = jQuery(this).attr('href');
-		self.infoContent.html(jQuery(id + "-text").html());
+	console.log("HOI 2234234234");
+	this.element.find('ul.nav-tabs li a').on('click', function(event){
+		self.categoryChanged.apply(self, [event]);
 	});
 	
-	var currentlyActiveTabId = jQuery('ul.nav-tabs li a').attr('href');
-	this.infoContent.html(jQuery(currentlyActiveTabId + '-text').html());
+	this.categoryChanged();
 	
 	jQuery('button[data-overlay]').popupOverlayJS({
 		$overlayContents : jQuery('.overlaycontent'),
@@ -47,6 +46,10 @@ var Collectionviewer = function(options){
 };
 Collectionviewer.prototype = Object.create(Component.prototype);
 Collectionviewer.prototype.device = "desktop";
+Collectionviewer.prototype.categoryChanged = function(event){
+	var currentlyActiveTabId = jQuery('ul.nav-tabs li.active a').attr('href');
+	this.infoContent.html(jQuery(currentlyActiveTabId + '-text').html());
+};
 Collectionviewer.prototype.initTooltips = function(){
 	console.log("Collectionviewer.initTooltips()");
 	this.element.find('button[data-toggle]').tooltip();
