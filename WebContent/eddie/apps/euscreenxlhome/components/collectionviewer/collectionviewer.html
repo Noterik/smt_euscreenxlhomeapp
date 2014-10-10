@@ -2,8 +2,8 @@
     <div class="ntk-layout-item media-item">
     	<div class="media-wrapper">
             <a class="modal-button">
-                <img src="<%= item.screenshot %>" class="media-object img-responsive">
-                <span class="media-hue"><i class="glyphicon glyphicon-play"></i></span>
+                <img src="<% if(item.screenshot){print(item.screenshot)}else{print('http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif')} %>" class="media-object img-responsive">
+                <span class="media-hue"><i class="glyphicon glyphicon-play fa fa-play"></i></span>
                 <span class="media-title">
                     <h3><%= item.description %></h3>
                 </span>
@@ -106,9 +106,8 @@
 				</div>
 				<div id="series-picks" class="tab-pane">
 					<ul class="list-inline">
-						<li class="active"><a href="#" data-topic="Health in the Basket">Health in the Basket</a></li>
+						<li class="active"><a href="#" data-id="EUS_B42097D1824516180A958B1138EA2475">Tomes Family</a></li>
 						<li><a href="#" data-topic="Series X">Series X</a></li>
-						<li><a href="#" data-topic="Series Y">Series Y</a></li>
 					</ul>
 				</div>
             </div>
@@ -121,6 +120,9 @@
 	<div class="col-md-12 collection-viewer">
 		<div class="row">
 			<div class="col-md-12">
+				<div class="collection-loading loading">
+					
+				</div>
 				<div class="items ntk-layout-squared">
 					<!-- CHUNKS OF ITEMS GO HERE -->
 				</div>

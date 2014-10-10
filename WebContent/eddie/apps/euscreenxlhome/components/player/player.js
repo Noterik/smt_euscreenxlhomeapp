@@ -3,6 +3,7 @@ var Player = function(options){
 	Component.apply(this, arguments);
 	
 	this.element = jQuery("#player");
+	this.template = this.element.find('#overlay-player-video-template').text();
 	this.element.find('.modal').on('hide.bs.modal', function(){
 		self.element.find('video')[0].pause();
 	});
@@ -15,14 +16,13 @@ Player.prototype.setTitle = function(data){
 };
 Player.prototype.setVideo = function(data){
 	var params = JSON.parse(data);
-	var source = jQuery('<source src="' + params.video + '" type="video/mp4">');
-	this.element.find('video').html(source);
+	console.log(params);
+	this.element.find('video').remove();
+	
+	var filledTemplate = _.template(this.template, {video: params});
+	console.log(filledTemplate);
+	this.element.find('.modal-body.media-player').html(filledTemplate);
 	this.element.find('.modal').modal('show');
-};
-Player.prototype.setPoster = function(data){
-	console.log("Player.prototype.setPoster(" + data + ")");
-	var params = JSON.parse(data);
-	this.element.find('video').attr('poster', params.poster);
 };
 Player.prototype.setLink = function(data){
 	console.log("Player.prototype.setLink(" + data + ")");

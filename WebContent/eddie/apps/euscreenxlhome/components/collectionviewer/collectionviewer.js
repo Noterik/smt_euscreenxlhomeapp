@@ -10,6 +10,7 @@ var Collectionviewer = function(options){
 	this.showMoreButton = this.element.find('.more');
 	this.lock = false;
 	this.gridSize = 4;
+	this.loadingElement = this.element.find('.loading');
 	
 	this.currentChunk = null;
 	this.currentGrid = null;
@@ -37,7 +38,8 @@ var Collectionviewer = function(options){
 	});
 	
 	this.element.find('.subcats a').on('click', function(event){
-		this.element.find('.subcats li.active').removeClass('active');
+		event.preventDefault();
+		self.element.find('.subcats .tab-pane.active li.active').removeClass('active');
 		jQuery(this).parent().addClass('active');
 		self.selectionChanged.apply(self, [event]);
 	});
@@ -55,11 +57,22 @@ Collectionviewer.prototype.selectionChanged = function(event){
 	this.currentlyActiveCategory = jQuery('ul.nav-tabs li.active a').attr('href');
 	this.infoContent.html(jQuery(this.currentlyActiveCategory + '-text').html());
 	
-	this.currentlyActiveCategory.replace("#", "");
-	this.currentlyActiveSubCategory = this.element.find('.subcats li.active a').data('topic');
+	this.element.find('.item-chunk').remove();
 	
-	console.log("ACTIVE CATEGORY: " + this.currentlyActiveCategory);
-	console.log("ACTIVE SUBCATEGORY: " + this.currentlyActiveSubCategory);
+	this.currentlyActiveCategory = this.currentlyActiveCategory.replace("#", "");
+	var subcategory = this.element.find('.subcats .tab-pane.active li.active a').data('topic');
+	if(!subcategory)
+		subcategory = this.element.find('.subcats .tab-pane.active li.active a').data('id');
+	
+	this.currentlyActiveSubCategory = subcategory;
+	
+	
+	var params = {
+		'category': this.currentlyActiveCategory,
+		'subcategory': this.currentlyActiveSubCategory
+	}
+	this.loadingElement.show();
+	eddie.putLou('', 'changeSelection(' + JSON.stringify(params) + ')')
 };
 Collectionviewer.prototype.initTooltips = function(){
 	console.log("Collectionviewer.initTooltips()");
@@ -137,6 +150,7 @@ Collectionviewer.prototype.appendItems = function(data){
 	this.lock = false;
 	this.currentChunk.data('layout').create(this.currentGrid);
 	$('#screen').css('visibility','visible');
+	this.loadingElement.hide();
 };
 Collectionviewer.prototype.endReached = function(){
 	this.showMoreButton.hide();

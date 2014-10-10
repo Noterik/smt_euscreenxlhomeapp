@@ -1,3 +1,9 @@
+<script type="text/template" id="overlay-player-video-template">
+	 <!-- replace with actual video player -->
+    <video id="sampleMovie" width="640" poster="<%= video.poster %>" height="360" preload controls>
+		<source src="<%= video.src %>" type="video/mp4">
+    </video>
+</script>
 <!-- modal -->
 <div class="modal fade bs-example-modal-lg" id="player-modal" tabindex="-1" role="dialog" aria-labelledby="player-modalLabel" aria-hidden="true">
     
@@ -13,7 +19,7 @@
            		<div class="pull-right item-anchor">
                 	<a id="visit-item-page" class="no-prod" href="item.html">
                 		Visit item page
-                    	<i class="fa fa-external-link"></i>
+                    	<i class="glyphicon glyphicon-external-link fa fa-external-link"></i>
                 	</a>
                 </div>
                 
