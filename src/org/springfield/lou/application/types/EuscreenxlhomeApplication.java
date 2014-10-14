@@ -115,11 +115,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			start = chunkRange[1] + 1;
 		}
 		
-		if(start == 0){
-			stop = start + limit;
-		}else{
-			stop = start + limit - 1;
-		}
+		stop = start + limit;
 		
 		Integer[] newRange = {start, stop};
 		s.setProperty("chunkRange", newRange);
@@ -137,7 +133,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		Integer[] range = (Integer[]) s.getProperty("chunkRange");
 		
 		List<FsNode> nodes = (List<FsNode>) s.getProperty("nodes");
-				
+
 		if(!this.inDevelMode()){ // Production mode
 			Filter approvedFilter = new Filter();
 			EqualsCondition condition = new EqualsCondition("public", "true");
@@ -199,6 +195,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		JSONObject data = (JSONObject) JSONValue.parse(message);
 		String category = (String) data.get("category");
 		
+		s.putMsg("collectionviewer", "", "moreAvailable()");
 		System.out.println("category: " + category);
 		
 		try{
@@ -218,7 +215,8 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			}else if(category.equals("in-the-news")){
 				this.setInTheNews(s, collectionNodes, subCategory);
 			}else if(category.equals("series-picks")){
-				this.setSeriesPicks(s, collectionNodes, subCategory);
+				String field = (String) data.get("field");
+				this.setSeriesPicks(s, collectionNodes, field, subCategory);
 			}
 		}catch(Exception e){ 
 			e.printStackTrace();
@@ -226,18 +224,30 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 	}
 	
-	private void setSeriesPicks(Screen s, FSList collectionNodes, String seriesId){
-		List<FsNode> nodes = collectionNodes.getNodesFiltered(seriesId.toLowerCase()); // find the item
-		if (nodes!=null && nodes.size()>0) {
-			FsNode n = (FsNode)nodes.get(0);
-			
-			FSList episodes = FSListManager.get(n.getPath() + "/video", false);
-			
-			s.setProperty("chunkRange", null);
-			
-			setNodes(s, episodes.getNodes());
-			s.putMsg("collectionviewer", "app", "createGrid()");
+	private void setSeriesPicks(Screen s, FSList collectionNodes, String field, String fieldValue){
+		System.out.println("setSeriesPicks(" + field + ", " + fieldValue + ")");
+		List<FsNode> nodes;
+		s.setProperty("chunkRange", null);
+		if(field.equals("id")){
+			nodes = collectionNodes.getNodesFiltered(fieldValue.toLowerCase()); // find the item
+			if (nodes!=null && nodes.size()>0) {
+				FsNode n = (FsNode)nodes.get(0);
+				
+				FSList episodes = FSListManager.get(n.getPath() + "/video", false);
+				
+				setNodes(s, episodes.getNodes());
+				
+			}
+		}else if(field.equals("title")){
+			Filter filter = new Filter();
+			EqualsCondition condition = new EqualsCondition(FieldMappings.getSystemFieldName("series"), fieldValue);
+			filter.addCondition(condition);
+			nodes = filter.apply(collectionNodes.getNodes());
+			setNodes(s, nodes);
 		}
+		
+		s.putMsg("collectionviewer", "app", "createGrid()");
+		
 	}
 	
 	private void setVideoHighlights(Screen s, FSList collectionNodes, String topic){

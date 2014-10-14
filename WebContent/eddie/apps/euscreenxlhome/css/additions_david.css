@@ -123,6 +123,7 @@
 	padding-right: 15px; 
 	z-index: 1031;
 	background-color: #FFFFFF;
+	overflow: auto;
 }
 #collectionviewer.fullscreentablet .go-fullscreen{
 	display: none;
@@ -132,4 +133,7 @@
 }
 .modal{
 	overflow-y: hidden;
+}
+body.fullscreenactive{
+	overflow: hidden;
 }

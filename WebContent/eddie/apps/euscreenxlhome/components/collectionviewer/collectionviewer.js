@@ -11,6 +11,7 @@ var Collectionviewer = function(options){
 	this.lock = false;
 	this.gridSize = 4;
 	this.loadingElement = this.element.find('.loading');
+	this.useNativeFullScreen = true;
 	
 	this.currentChunk = null;
 	this.currentGrid = null;
@@ -60,17 +61,27 @@ Collectionviewer.prototype.selectionChanged = function(event){
 	this.element.find('.item-chunk').remove();
 	
 	this.currentlyActiveCategory = this.currentlyActiveCategory.replace("#", "");
+	var field = 'topic';
 	var subcategory = this.element.find('.subcats .tab-pane.active li.active a').data('topic');
-	if(!subcategory)
+	if(!subcategory){
+		field = 'id';
 		subcategory = this.element.find('.subcats .tab-pane.active li.active a').data('id');
+		if(!subcategory){
+			field = 'title'
+			subcategory = this.element.find('.subcats .tab-pane.active li.active a').data('title');
+		}
+	}
 	
 	this.currentlyActiveSubCategory = subcategory;
 	
 	
 	var params = {
 		'category': this.currentlyActiveCategory,
-		'subcategory': this.currentlyActiveSubCategory
-	}
+		'subcategory': this.currentlyActiveSubCategory,
+		'field': field
+	};
+	
+	console.log(params);
 	this.loadingElement.show();
 	eddie.putLou('', 'changeSelection(' + JSON.stringify(params) + ')')
 };
@@ -152,11 +163,16 @@ Collectionviewer.prototype.appendItems = function(data){
 	$('#screen').css('visibility','visible');
 	this.loadingElement.hide();
 };
+Collectionviewer.prototype.moreAvailable = function(){
+	this.showMoreButton.show();
+};
 Collectionviewer.prototype.endReached = function(){
 	this.showMoreButton.hide();
 };
 Collectionviewer.prototype.leaveFullScreen = function(){
-	if(this.device != "tablet"){
+	var element = this.element[0];
+	if(this.device != "tablet" && this.useNativeFullScreen && (element.requestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen || element.msRequestFullscreen)){
+		
 		if(document.webkitExitFullscreen) {
 		    document.webkitExitFullscreen();
 		} else if(document.mozCancelFullScreen) {
@@ -169,16 +185,19 @@ Collectionviewer.prototype.leaveFullScreen = function(){
 	}else{
 		eddie.putLou('', 'fullscreenChanged()');
 		this.element.removeClass('fullscreentablet');
-		self.collectionElement.html('');
-		self.gridSize = 4;
-		self.createGrid();
+		jQuery('body').removeClass('fullscreenactive');
 	}
+	this.collectionElement.html('');
+	this.loadingElement.show();
+	this.gridSize = 4;
+	this.createGrid();
 };
 Collectionviewer.prototype.goFullScreen = function(){
+	this.loadingElement.show();
 	var self = this;
 	var element = this.element[0];
 	
-	if(this.device != "tablet"){
+	if(this.device != "tablet" && this.useNativeFullScreen && (element.requestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen || element.msRequestFullscreen)){
 		this.element.on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(event){
 			
 			jQuery(this).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
@@ -214,9 +233,15 @@ Collectionviewer.prototype.goFullScreen = function(){
 		}
 	}else{
 		this.element.addClass('fullscreentablet');
+		jQuery('body').addClass('fullscreenactive');
 		eddie.putLou('', 'fullscreenChanged()');
 		self.collectionElement.html('');
-		self.gridSize = 4;
+		
+		if(this.device == "tablet"){
+			self.gridSize = 4;
+		}else{
+			self.gridSize = 8;
+		}
 		self.createGrid();
 	}
 };
