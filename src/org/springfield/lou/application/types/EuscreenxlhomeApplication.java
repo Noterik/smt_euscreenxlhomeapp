@@ -274,6 +274,8 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		FilterCondition topicCondition = new EqualsCondition(FieldMappings.getSystemFieldName("topic"), topic);
 		filter.addCondition(topicCondition);
 		
+		nodes = filter.apply(nodes);
+		
 		s.setProperty("chunkRange", null);
 		setNodes(s, nodes, true);
 		s.putMsg("collectionviewer", "app", "createGrid()");

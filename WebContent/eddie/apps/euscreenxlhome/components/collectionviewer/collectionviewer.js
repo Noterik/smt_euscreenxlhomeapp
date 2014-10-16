@@ -28,7 +28,9 @@ var Collectionviewer = function(options){
 	});
 	
 	this.exitFullscreenButton = jQuery('#exit-fullscreen');
-	this.exitFullscreenButton.on('click', function(){
+	this.exitFullscreenButton.on('click', function(event){
+		event.preventDefault();
+		jQuery(this).removeClass("active");
 		self.leaveFullScreen();
 	});
 	
@@ -89,26 +91,37 @@ Collectionviewer.prototype.initTooltips = function(){
 	console.log("Collectionviewer.initTooltips()");
 	this.element.find('button[data-toggle]').tooltip();
 };
+Collectionviewer.prototype.listenToScroll = function(element){
+	var self = this;
+	this.showMoreButton.find('a').remove();
+	this.showMoreButton.addClass('loading');
+	
+	console.log(element);
+	
+	element.off('scroll').on('scroll', function(){
+		if(!self.lock){
+			var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
+			var difference = _docHeight - jQuery(element).scrollTop();
+			var wHeight = element.height();
+			
+			if((difference / 2) <= wHeight){
+				self.lock = true;
+				self.createGrid();
+			}
+		}
+	});
+};
+Collectionviewer.prototype.stopListeningToScroll = function(element){
+	this.showMoreButton.removeClass('loading');
+	this.showMoreButton.append('<a href="#">SHOW MORE</a>');
+	element.off('scroll');
+};
 Collectionviewer.prototype.setDevice = function(device){
 	var self = this;
 	console.log("setDevice(" + device + ")");
 	this.device = device;
 	if(device == "tablet"){
-		this.showMoreButton.find('a').remove();
-		this.showMoreButton.addClass('loading')
-		
-		jQuery(window).on('scroll', function(){
-			if(!self.lock){
-				var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
-				var difference = _docHeight - jQuery(window).scrollTop();
-				var wHeight = jQuery(window).height();
-				
-				if((difference / 2) <= wHeight){
-					self.lock = true;
-					self.createGrid();
-				}
-			}
-		});
+		this.listenToScroll(jQuery(window));
 	}
 };
 Collectionviewer.prototype.createGrid = function(){
@@ -171,6 +184,9 @@ Collectionviewer.prototype.endReached = function(){
 };
 Collectionviewer.prototype.leaveFullScreen = function(){
 	var element = this.element[0];
+	this.element.removeClass('fullscreen');
+	jQuery('body').removeClass('fullscreenactive');
+	this.stopListeningToScroll(this.element);
 	if(this.device != "tablet" && this.useNativeFullScreen && (element.requestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen || element.msRequestFullscreen)){
 		
 		if(document.webkitExitFullscreen) {
@@ -185,17 +201,22 @@ Collectionviewer.prototype.leaveFullScreen = function(){
 	}else{
 		eddie.putLou('', 'fullscreenChanged()');
 		this.element.removeClass('fullscreentablet');
-		jQuery('body').removeClass('fullscreenactive');
 	}
 	this.collectionElement.html('');
 	this.loadingElement.show();
 	this.gridSize = 4;
 	this.createGrid();
+	this.fullscreenButton.removeClass("active");
 };
 Collectionviewer.prototype.goFullScreen = function(){
 	this.loadingElement.show();
 	var self = this;
 	var element = this.element[0];
+	
+	this.element.addClass('fullscreen');
+	jQuery('body').addClass('fullscreenactive');
+	
+	this.listenToScroll(this.element);
 	
 	if(this.device != "tablet" && this.useNativeFullScreen && (element.requestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen || element.msRequestFullscreen)){
 		this.element.on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(event){
@@ -203,7 +224,7 @@ Collectionviewer.prototype.goFullScreen = function(){
 			jQuery(this).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
 			eddie.putLou('', 'fullscreenChanged()');
 			self.collectionElement.html('');
-			self.gridSize = 8;
+			self.gridSize = 6;
 			self.createGrid();
 			
 			var element = this;
@@ -233,14 +254,13 @@ Collectionviewer.prototype.goFullScreen = function(){
 		}
 	}else{
 		this.element.addClass('fullscreentablet');
-		jQuery('body').addClass('fullscreenactive');
 		eddie.putLou('', 'fullscreenChanged()');
 		self.collectionElement.html('');
 		
 		if(this.device == "tablet"){
 			self.gridSize = 4;
 		}else{
-			self.gridSize = 8;
+			self.gridSize = 6;
 		}
 		self.createGrid();
 	}

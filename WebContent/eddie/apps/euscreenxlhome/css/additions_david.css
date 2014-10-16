@@ -113,6 +113,15 @@
 	display: inline-block;
 }
 
+#collectionviewer.fullscreen{
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+body.fullscreenactive #player .modal-dialog{
+	width: 60%;
+}
+
 #collectionviewer.fullscreentablet{
 	position: fixed;
 	top: 0;
@@ -136,4 +145,14 @@
 }
 body.fullscreenactive{
 	overflow: hidden;
+}
+
+@media (min-width: 1200px){
+	#collectionviewer.fullscreen .media-title h3{
+		font-size: 1em;
+	}
+	
+	#collectionviewer.fullscreen .media-big h3{
+		font-size: 1.5em;
+	}
 }
