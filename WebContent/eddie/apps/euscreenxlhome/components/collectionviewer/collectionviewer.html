@@ -3,7 +3,7 @@
     	<div class="media-wrapper">
             <a class="modal-button">
                 <img src="<% if(item.screenshot){print(item.screenshot)}else{print('http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif')} %>" class="media-object img-responsive">
-                <span class="media-hue"><i class="glyphicon glyphicon-play fa fa-play"></i></span>
+                <span class="media-hue"><i class="glyphicon glyphicon-play fa fa-play hidden-sm"></i></span>
                 <span class="media-title">
                     <h3><%= item.description %></h3>
                 </span>
@@ -14,25 +14,19 @@
 <script type="text/template" id="video-highlights-text">
 	<h3>Video Highlights</h3>
 	<p>
-	    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore 
-	    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Dolore 
-	    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+	    Explore videos chosen by EUscreen partners. These video highlights showcase a range of EUscreen material from across Europe and have been specifically chosen by broadcasters and archivists. 
 	</p>
 </script>
 <script type="text/template" id="in-the-news-text">
 	<h3>In The News</h3>
 	<p>
-	    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore 
-	    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Dolore 
-	    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+	    EUscreen content explores many historical events and topics that are still relevant today. In this section you will find collections of videos that refer to current affairs or topical issues.
 	</p>
 </script>
 <script type="text/template" id="series-picks-text">
 	<h3>Series Picks</h3>
 	<p>
-	    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore 
-	    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Dolore 
-	    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+	    In addition to individual programmes and clips, EUscreen features series and collections. These range from broadcast series to newsreels, collections of amateur film, production stills and documents. Series Picks showcases a selection of this content. 
 	</p>
 </script>
 <script type="text/template" id="chunk-template">
@@ -106,9 +100,9 @@
 				</div>
 				<div id="series-picks" class="tab-pane">
 					<ul class="list-inline">
-						<li class="active"><a href="#" data-title="Panorama">Panorama</a></li>
-						<li><a href="#" data-title="Man Alive">Man Alive</a></li>
-						<li><a href="#" data-title="Tonight">Tonight</a></li>
+						<li class="active"><a href="#" data-series="Panorama" data-provider="BBC">Panorama</a></li>
+						<li><a href="#" data-series="Man Alive" data-provider="BBC">Man Alive</a></li>
+						<li><a href="#" data-series="Tonight" data-provider="BBC">Tonight</a></li>
 						<li><a href="#" data-id="EUS_E89B933828211400F3EC2161D635B2E3">Les Actualit&eacute;s Fran&ccedil;aises</a></li>
 					</ul>
 				</div>

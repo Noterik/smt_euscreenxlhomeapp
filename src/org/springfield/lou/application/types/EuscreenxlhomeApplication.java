@@ -1,5 +1,6 @@
 package org.springfield.lou.application.types;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.springfield.lou.application.Html5Application;
 import org.springfield.lou.application.components.ComponentManager;
+import org.springfield.lou.application.types.conditions.AndCondition;
 import org.springfield.lou.application.types.conditions.EqualsCondition;
 import org.springfield.lou.application.types.conditions.FilterCondition;
 import org.springfield.lou.homer.LazyHomer;
@@ -30,6 +32,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	private FSList allNodes;
 	private static Boolean wantedna = true;
 	private HashMap<String, String> categoryURLMappings;
+	private HashMap<String, String> subtitleMappings;
 	
 	private Comparator<Node> titleComparator = new Comparator<Node>(){
 		@Override
@@ -68,6 +71,11 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.categoryURLMappings.put("video-highlights", "/domain/euscreenxl/user/eu_agency/collection/highlights/teaser");
 		this.categoryURLMappings.put("in-the-news", "/domain/euscreenxl/user/eu_agency/collection/inthenews/teaser");
 		this.categoryURLMappings.put("series-picks", "/domain/euscreenxl/user/*/*");
+		
+		this.subtitleMappings = new HashMap<String, String>();
+		this.subtitleMappings.put("EUS_61C0D194C09E1258818041CDB9EB1F997FB4BCF2", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_C09E1258818041CDB9EB1F997FB4BCF2.vtt");
+		this.subtitleMappings.put("EUS_5FB8510DC09E1258818041CDB9EB1F997FB4BCF2", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_C09E1258818041CDB9EB1F997FB4BCF2.vtt");
+		this.subtitleMappings.put("EUS_29D477BDBB6AADDE415446ED863DBF6CD8E469BF", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_29D477BDBB6AADDE415446ED863DBF6CD8E469BF.vtt");
 	}
  	
  	 public String getFavicon() {
@@ -208,15 +216,16 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 				collectionNodes = FSListManager.get(uri, false);
 			}
 			System.out.println(collectionNodes);
-			String subCategory = (String) data.get("subcategory");
+			
+			JSONObject params = (JSONObject) data.get("params");
+		
 			
 			if(category.equals("video-highlights")){
-				this.setVideoHighlights(s, collectionNodes, subCategory);
+				this.setVideoHighlights(s, collectionNodes, params);
 			}else if(category.equals("in-the-news")){
-				this.setInTheNews(s, collectionNodes, subCategory);
+				this.setInTheNews(s, collectionNodes, params);
 			}else if(category.equals("series-picks")){
-				String field = (String) data.get("field");
-				this.setSeriesPicks(s, collectionNodes, field, subCategory);
+				this.setSeriesPicks(s, collectionNodes, params);
 			}
 		}catch(Exception e){ 
 			e.printStackTrace();
@@ -224,35 +233,47 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		
 	}
 	
-	private void setSeriesPicks(Screen s, FSList collectionNodes, String field, String fieldValue){
-		System.out.println("setSeriesPicks(" + field + ", " + fieldValue + ")");
-		List<FsNode> nodes;
+	private void setSeriesPicks(Screen s, FSList collectionNodes, JSONObject searchParameters){
+		System.out.println("setSeriesPicks(" + searchParameters + ")");
+		List<FsNode> nodes = new ArrayList<FsNode>();
 		s.setProperty("chunkRange", null);
-		if(field.equals("id")){
-			nodes = collectionNodes.getNodesFiltered(fieldValue.toLowerCase()); // find the item
+		
+		
+		if(searchParameters.containsKey("id")){
+			String id = (String) searchParameters.get("id");
+			
+			nodes = collectionNodes.getNodesFiltered(id.toLowerCase()); // find the item
 			if (nodes!=null && nodes.size()>0) {
 				FsNode n = (FsNode)nodes.get(0);
 				
 				FSList episodes = FSListManager.get(n.getPath() + "/video", false);
 				
-				setNodes(s, episodes.getNodes());
+				nodes = episodes.getNodes();
 				
 			}
-		}else if(field.equals("title")){
+		}else if(searchParameters.containsKey("series")){
+			String series = (String) searchParameters.get("series");
+			String provider = (String) searchParameters.get("provider");
+			EqualsCondition seriesCondition = new EqualsCondition(FieldMappings.getSystemFieldName("series"), series);
+			EqualsCondition providerCondition = new EqualsCondition(FieldMappings.getSystemFieldName("provider"), provider);
 			Filter filter = new Filter();
-			EqualsCondition condition = new EqualsCondition(FieldMappings.getSystemFieldName("series"), fieldValue);
-			filter.addCondition(condition);
+			AndCondition andCondition = new AndCondition();
+			andCondition.add(seriesCondition);
+			andCondition.add(providerCondition);
+			filter.addCondition(andCondition);
 			nodes = filter.apply(collectionNodes.getNodes());
-			setNodes(s, nodes);
 		}
+		
+		setNodes(s, nodes);
 		
 		s.putMsg("collectionviewer", "app", "createGrid()");
 		
 	}
 	
-	private void setVideoHighlights(Screen s, FSList collectionNodes, String topic){
+	private void setVideoHighlights(Screen s, FSList collectionNodes, JSONObject params){
 		System.out.println("setVideoHighLights()");
 		List<FsNode> nodes = collectionNodes.getNodes();
+		String topic = (String) params.get("topic");
 		
 		if(!topic.equals("*")){
 			Filter filter = new Filter();
@@ -266,9 +287,11 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		s.putMsg("collectionviewer", "app", "createGrid()");
 	}
 	
-	private void setInTheNews(Screen s, FSList collectionNodes, String topic){
+	private void setInTheNews(Screen s, FSList collectionNodes, JSONObject params){
 		System.out.println("setInTheNews()");
 		List<FsNode> nodes = collectionNodes.getNodes();
+		
+		String topic = (String) params.get("topic");
 		
 		Filter filter = new Filter();
 		FilterCondition topicCondition = new EqualsCondition(FieldMappings.getSystemFieldName("topic"), topic);
@@ -305,11 +328,11 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		}
 	}
 	
-	public void playVideo(Screen s, String path){
-		System.out.println("CollectionrutgerApplication.playVideo(" +  path + ")");
+	public void playVideo(Screen s, String id){
+		System.out.println("CollectionrutgerApplication.playVideo(" +  id + ")");
 		String uri = (String) s.getProperty("uri");
 		System.out.println("URI: " + uri);
-		String teaserPath = uri + "/" + path;
+		String teaserPath = uri + "/" + id;
 		FsNode teaser = Fs.getNode(teaserPath);
 		String videoPath = null;
 		String title = null;
@@ -321,7 +344,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			String allURI = "/domain/euscreenxl/user/*/*";
 			
 			FSList fslist = FSListManager.get(allURI);
-			List<FsNode> nodes = fslist.getNodesFiltered(path.toLowerCase()); // find the item
+			List<FsNode> nodes = fslist.getNodesFiltered(id.toLowerCase()); // find the item
 			if (nodes!=null && nodes.size()>0) {
 				FsNode n = (FsNode)nodes.get(0);
 				title = org.springfield.fs.FsEncoding.decode(n.getProperty(FieldMappings.getSystemFieldName("title")));
@@ -346,6 +369,12 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			videoMessage.put("src", splits[0]);
 			videoMessage.put("title", title);
 			videoMessage.put("poster", poster);
+			
+			System.out.println("ID: " + id);
+			
+			if(this.subtitleMappings.containsKey(id)){
+				videoMessage.put("subtitles", this.subtitleMappings.get(id));
+			}
 			
 			JSONObject linkMessage = new JSONObject();
 			linkMessage.put("id", video.getId());

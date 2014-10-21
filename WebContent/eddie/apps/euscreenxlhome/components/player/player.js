@@ -12,7 +12,7 @@ var Player = function(options){
 Player.prototype = Object.create(Component.prototype);
 Player.prototype.setTitle = function(data){
 	var params = JSON.parse(data);
-	this.element.find('h4.modal-title').text(params.title);
+	this.element.find('h4.modal-title').html(params.title);
 };
 Player.prototype.setVideo = function(data){
 	var self = this;

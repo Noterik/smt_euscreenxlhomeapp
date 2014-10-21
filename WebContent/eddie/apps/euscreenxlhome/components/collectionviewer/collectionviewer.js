@@ -15,6 +15,7 @@ var Collectionviewer = function(options){
 	
 	this.currentChunk = null;
 	this.currentGrid = null;
+	this.currentSize = null;
 		
 	this.showMoreButton.on('click', function(event){
 		event.preventDefault();
@@ -62,28 +63,33 @@ Collectionviewer.prototype.selectionChanged = function(event){
 	
 	this.element.find('.item-chunk').remove();
 	
+	var subparams = {};
+	
 	this.currentlyActiveCategory = this.currentlyActiveCategory.replace("#", "");
 	var field = 'topic';
-	var subcategory = this.element.find('.subcats .tab-pane.active li.active a').data('topic');
-	if(!subcategory){
-		field = 'id';
-		subcategory = this.element.find('.subcats .tab-pane.active li.active a').data('id');
-		if(!subcategory){
-			field = 'title'
-			subcategory = this.element.find('.subcats .tab-pane.active li.active a').data('title');
-		}
+	
+	if(this.element.find('.subcats .tab-pane.active li.active a').data('topic')){
+		subparams['topic'] = this.element.find('.subcats .tab-pane.active li.active a').data('topic');
 	}
 	
-	this.currentlyActiveSubCategory = subcategory;
+	if(this.element.find('.subcats .tab-pane.active li.active a').data('id')){
+		subparams['id'] = this.element.find('.subcats .tab-pane.active li.active a').data('id');
+	}
+	
+	if(this.element.find('.subcats .tab-pane.active li.active a').data('series')){
+		subparams['series'] = this.element.find('.subcats .tab-pane.active li.active a').data('series');
+	}
+	
+	if(this.element.find('.subcats .tab-pane.active li.active a').data('provider')){
+		subparams['provider'] = this.element.find('.subcats .tab-pane.active li.active a').data('provider');
+	}
 	
 	
 	var params = {
 		'category': this.currentlyActiveCategory,
-		'subcategory': this.currentlyActiveSubCategory,
-		'field': field
+		'params': subparams
 	};
 	
-	console.log(params);
 	this.loadingElement.show();
 	eddie.putLou('', 'changeSelection(' + JSON.stringify(params) + ')')
 };
@@ -142,6 +148,7 @@ Collectionviewer.prototype.createGrid = function(){
 	}
 	
 	this.collectionElement.append(this.currentChunk);
+	this.currentsize = size;
 	eddie.putLou('', 'setGridSize(' + size + ')');
 	
 };
@@ -233,11 +240,14 @@ Collectionviewer.prototype.goFullScreen = function(){
 			//So I start listening after the second event has triggered.
 			setTimeout(function(){
 				jQuery(element).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(event){
+					self.element.removeClass('fullscreen');
 					jQuery(element).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
 					eddie.putLou('', 'fullscreenChanged()');
 					self.collectionElement.html('');
 					self.gridSize = 4;
-					self.createGrid();
+					setTimeout(function(){
+						self.createGrid();
+					}, 1000)
 				});
 			}, 1);
 			

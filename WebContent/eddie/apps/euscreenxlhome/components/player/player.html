@@ -1,7 +1,10 @@
 <script type="text/template" id="overlay-player-video-template">
 	 <!-- replace with actual video player -->
-    <video id="sampleMovie" width="640" poster="<%= video.poster %>" height="360" preload controls>
+    <video id="sampleMovie" width="640" poster="<%= video.poster %>" height="360" autoplay="autoplay" preload="preload" controls>
 		<source src="<%= video.src %>" type="video/mp4">
+		<% if(video.subtitles){ %>
+			<track label="English subtitles" kind="subtitles" srclang="en" src="<%= video.subtitles %>" default=""></track>
+		<% } %>
     </video>
 </script>
 <!-- modal -->
