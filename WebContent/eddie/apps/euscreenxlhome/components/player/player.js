@@ -38,6 +38,7 @@ Player.prototype.setVideo = function(data){
 			
 		});
 	}
+	
 };
 Player.prototype.setLink = function(data){
 	console.log("Player.prototype.setLink(" + data + ")");

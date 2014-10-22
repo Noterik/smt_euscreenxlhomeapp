@@ -147,6 +147,11 @@ body.fullscreenactive{
 	overflow: hidden;
 }
 
+body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .media-action .logo-second{
+	display: inline;
+	width: 50px;
+}
+
 @media (min-width: 1200px){
 	#collectionviewer.fullscreen .media-title h3{
 		font-size: 1em;

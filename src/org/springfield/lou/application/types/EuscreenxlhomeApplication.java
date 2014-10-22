@@ -57,7 +57,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("warning", "/euscreenxlelements/warning");
 		this.addReferid("videocopyright", "/euscreenxlelements/videocopyright");
 		this.addReferid("fontawesome", "/euscreenxlelements/fontawesome");
-		
+		this.addReferid("analytics", "/euscreenxlelements/analytics");
 		
 		this.addReferidCSS("fontawesome", "/euscreenxlelements/fontawesome");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
@@ -76,7 +76,12 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.subtitleMappings.put("EUS_61C0D194C09E1258818041CDB9EB1F997FB4BCF2", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_C09E1258818041CDB9EB1F997FB4BCF2.vtt");
 		this.subtitleMappings.put("EUS_5FB8510DC09E1258818041CDB9EB1F997FB4BCF2", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_C09E1258818041CDB9EB1F997FB4BCF2.vtt");
 		this.subtitleMappings.put("EUS_29D477BDBB6AADDE415446ED863DBF6CD8E469BF", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_29D477BDBB6AADDE415446ED863DBF6CD8E469BF.vtt");
-	}
+		this.subtitleMappings.put("EUS_ECF997B524B9315CE0954D189954A909352103F1", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_24B9315CE0954D189954A909352103F1.vtt");
+		this.subtitleMappings.put("EUS_29D477BDBB6AADDE415446ED863DBF6CD8E469BF", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_BB6AADDE415446ED863DBF6CD8E469BF.vtt");
+		this.subtitleMappings.put("EUS_22A13730C1527DF4811A4D1CAAA6B1AAA2337A7D", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_C1527DF4811A4D1CAAA6B1AAA2337A7D.vtt");
+		this.subtitleMappings.put("EUS_9BD29393D326CB022C154E86A2371BF37143C42B", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_D326CB022C154E86A2371BF37143C42B.vtt");
+		this.subtitleMappings.put("EUS_756ADC59FC8F1A3942764B609E97783616056779", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_FC8F1A3942764B609E97783616056779.vtt");
+ 	}
  	
  	 public String getFavicon() {
          return "/eddie/apps/euscreenxlelements/img/favicon.png";
@@ -356,11 +361,15 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			String rawVideoPath = videoPath + "/rawvideo/1";
 			FsNode video = Fs.getNode(videoPath);
 			FsNode rawvideo = Fs.getNode(rawVideoPath);
-					
 			
-			String mount = rawvideo.getProperty("mount");
+			String videoFilePath = rawvideo.getProperty("mount");
+			if (videoFilePath.indexOf("http://")==-1) {
+				videoFilePath = "http://" + videoFilePath + ".noterik.com/progressive/" + videoFilePath + "/" + video.getPath() + "/rawvideo/1/raw.mp4";
+			}
+			
+			
 			String poster = setEdnaMapping(video.getProperty("screenshot"));
-			String[] splits = mount.split(",");		
+			String[] splits = videoFilePath.split(",");		
 			
 			JSONObject titleMessage = new JSONObject();
 			titleMessage.put("title", title);

@@ -3,7 +3,7 @@
     <video id="sampleMovie" width="640" poster="<%= video.poster %>" height="360" autoplay="autoplay" preload="preload" controls>
 		<source src="<%= video.src %>" type="video/mp4">
 		<% if(video.subtitles){ %>
-			<track label="English subtitles" kind="subtitles" srclang="en" src="<%= video.subtitles %>" default=""></track>
+			<track label="English subtitles" kind="subtitles" srclang="en" src="<%= video.subtitles %>" type="text/vtt" default="default"></track>
 		<% } %>
     </video>
 </script>

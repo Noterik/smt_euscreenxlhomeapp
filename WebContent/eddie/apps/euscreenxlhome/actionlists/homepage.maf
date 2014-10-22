@@ -1,3 +1,9 @@
+setUrlTrigger(/lou/euscreen/home.html,/lou/domain/webtv/html5application/euscreenxlhome)
+setUrlTrigger(euscreen.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
+setUrlTrigger(www.euscreen.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
+setUrlTrigger(www.euscreenxl.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
+setUrlTrigger(beta.euscreenxl.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
+setUrlTrigger(beta.euscreen.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
 loadContent(screen,favicon)
 loadContent(screen,warning)
 loadContent(screen,videocopyright)
@@ -12,10 +18,6 @@ loadStylesheet(screen,additions_david)
 loadStylesheet(screen,ntk-layout)
 
 .when device=desktop
-setUrlTrigger(/lou/euscreen/home.html,/lou/domain/webtv/html5application/euscreenxlhome)
-setUrlTrigger(www.euscreenxl.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
-setUrlTrigger(beta.euscreenxl.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
-setUrlTrigger(beta.euscreen.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
 callServer(daniellog,screen)
 setRole(screen,"itempage")
 loadContent(screen,template)
@@ -80,3 +82,5 @@ loadContent(screen,mobilenav)
 loadContent(screen,carousel)
 loadContent(screen,linkinterceptor)
 callServer(initializeMode,screen,content)
+
+loadContent(screen,analytics);

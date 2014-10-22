@@ -50,6 +50,18 @@ var Collectionviewer = function(options){
 	
 	this.selectionChanged();
 	
+	jQuery('button[data-overlay]').click(function(event){
+		var element = jQuery(this);
+		console.log(jQuery(this).hasClass('active'));
+		if(element.hasClass('active') && self.device == "tablet"){
+			var el = this;
+		    var par = el.parentNode;
+		    var next = el.nextSibling;
+		    par.removeChild(el);
+		    setTimeout(function() {par.insertBefore(el, next);}, 0)
+		}
+	});
+	
 	jQuery('button[data-overlay]').popupOverlayJS({
 		$overlayContents : jQuery('.overlaycontent'),
 		contentOverlayIdAttr : 'data-overlay'
@@ -190,6 +202,7 @@ Collectionviewer.prototype.endReached = function(){
 	this.showMoreButton.hide();
 };
 Collectionviewer.prototype.leaveFullScreen = function(){
+	var self = this;
 	var element = this.element[0];
 	this.element.removeClass('fullscreen');
 	jQuery('body').removeClass('fullscreenactive');
@@ -241,6 +254,10 @@ Collectionviewer.prototype.goFullScreen = function(){
 			setTimeout(function(){
 				jQuery(element).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(event){
 					self.element.removeClass('fullscreen');
+					self.exitFullscreenButton.removeClass('active');
+					self.fullscreenButton.removeClass('active');
+					self.stopListeningToScroll(self.element);
+					jQuery('body').removeClass('fullscreenactive');
 					jQuery(element).off('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange');
 					eddie.putLou('', 'fullscreenChanged()');
 					self.collectionElement.html('');
