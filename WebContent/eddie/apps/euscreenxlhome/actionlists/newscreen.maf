@@ -50,5 +50,3 @@ loadContent(screen,carousel)
 loadContent(screen,linkinterceptor)
 loadContent(screen,fullscreencollectionview)
 callServer(initializeMode,screen,content)
-
-loadContent(screen,analytics);

@@ -82,5 +82,3 @@ loadContent(screen,mobilenav)
 loadContent(screen,carousel)
 loadContent(screen,linkinterceptor)
 callServer(initializeMode,screen,content)
-
-loadContent(screen,analytics);
