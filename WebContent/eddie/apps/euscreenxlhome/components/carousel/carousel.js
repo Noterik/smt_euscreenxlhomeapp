@@ -3,7 +3,7 @@ var Carousel = function(options){
 	
 	this.carouselElement = jQuery("#carousel-example-generic");
 	this.carouselElement.carousel({
-		interval: 8000
+		interval: 16000
 	});
 };
 Carousel.prototype = Object.create(Component.prototype);

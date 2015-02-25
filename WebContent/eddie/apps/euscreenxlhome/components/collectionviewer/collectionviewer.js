@@ -175,9 +175,11 @@ Collectionviewer.prototype.appendItems = function(data){
 			(function(item){
 				return function(){
 					if(self.device != "tablet"){
+						ga('send', 'event', 'videos', 'open', 'home-page-videos', item.id);
 						eddie.putLou("", "playVideo(" + item.id + ")");
 					}else{
 						if(jQuery(this).data('touched')) {
+							ga('send', 'event', 'videos', 'open', 'home-page-videos', item.id);
 		                    eddie.putLou("", "playVideo(" + item.id + ")");
 		                }else{
 		                	self.element.find('.media-item').data('touched', false);
