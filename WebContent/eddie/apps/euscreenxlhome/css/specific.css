@@ -223,6 +223,20 @@ body .home .main {
   -o-background-size: cover;
   background-size: cover;
 }
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg-7 {
+	background: url('/eddie/apps/euscreenxlhome/img/slides/survey_bg.png') no-repeat;
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+ 	 background-size: cover;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg-8 {
+	background: url('/eddie/apps/euscreenxlhome/img/slides/survey_bg_2.jpg') no-repeat;
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+ 	 background-size: cover;
+}
 .home .main .row .jumbotron .carousel .carousel-control {
   width: 6%;
 }
