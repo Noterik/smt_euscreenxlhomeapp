@@ -1,5 +1,10 @@
 package org.springfield.lou.application.types;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,6 +15,9 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
+import java.util.Scanner;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.dom4j.Node;
 import org.json.simple.JSONArray;
@@ -33,6 +41,8 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	private static Boolean wantedna = true;
 	private HashMap<String, String> categoryURLMappings;
 	private HashMap<String, String> subtitleMappings;
+	public String ipAddress="";
+	public static boolean isAndroid;
 	
 	private Comparator<Node> titleComparator = new Comparator<Node>(){
 		@Override
@@ -362,7 +372,18 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			
 			String videoFilePath = rawvideo.getProperty("mount");
 			if (videoFilePath.indexOf("http://")==-1) {
-				videoFilePath = "http://" + videoFilePath + ".noterik.com/progressive/" + videoFilePath + "/" + video.getPath() + "/rawvideo/1/raw.mp4";
+				Random randomGenerator = new Random();
+				Integer random= randomGenerator.nextInt(100000000);
+				String ticket = Integer.toString(random);
+
+				String videoFile= "/"+videoFilePath+"/"+video.getPath()+ "/rawvideo/1/raw.mp4";
+				
+				try{						
+					//System.out.println("CallingSendTicket");						
+					sendTicket(videoFile,ipAddress,ticket);}
+				catch (Exception e){}
+				
+				videoFilePath = "http://" + videoFilePath + ".noterik.com/progressive/" + videoFilePath + "/" + video.getPath() + "/rawvideo/1/raw.mp4?ticket="+ticket;
 			}
 			
 			
@@ -407,5 +428,91 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		}else{
 			return null;
 		}
+	}
+	
+	public String getMetaHeaders(HttpServletRequest request) {
+		ipAddress=getClientIpAddress(request);
+		
+		String browserType = request.getHeader("User-Agent");
+		if(browserType.indexOf("Mobile") != -1) {
+			String ua = request.getHeader("User-Agent").toLowerCase();
+			isAndroid = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");	
+		}
+		
+		return "";
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////
+	//Themis NISV
+	/////////////////////////////////////////////////////////////////////////////////////
+	private static void sendTicket(String videoFile, String ipAddress, String ticket) throws IOException {
+		URL serverUrl = new URL("http://82.94.187.227:8001/acl/ticket");
+		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
+		
+		Long Sytime = System.currentTimeMillis();
+		Sytime = Sytime / 1000;
+		String expiry = Long.toString(Sytime+(15*60));
+		
+		// Indicate that we want to write to the HTTP request body
+		
+		urlConnection.setDoOutput(true);
+		urlConnection.setRequestMethod("POST");
+		videoFile=videoFile.substring(1);
+		
+		//System.out.println("I send this video address to the ticket server:"+videoFile);
+		//System.out.println("And this ticket:"+ticket);
+		//System.out.println("And this EXPIRY:"+expiry);
+		
+		// Writing the post data to the HTTP request body
+		BufferedWriter httpRequestBodyWriter = 
+		new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
+		String content="";
+		if (isAndroid){
+			content = "<fsxml><properties><ticket>"+ticket+"</ticket>"
+			+ "<uri>/"+videoFile+"</uri><ip>"+ipAddress+"</ip> "
+			+ "<role>user</role>"
+			+ "<expiry>"+expiry+"</expiry><maxRequests>4</maxRequests></properties></fsxml>";
+			isAndroid=false;
+			//System.out.println("Android ticket!");
+		}
+		else {
+			content = "<fsxml><properties><ticket>"+ticket+"</ticket>"
+			+ "<uri>/"+videoFile+"</uri><ip>"+ipAddress+"</ip> "
+			+ "<role>user</role>"
+			+ "<expiry>"+expiry+"</expiry><maxRequests>1</maxRequests></properties></fsxml>";
+		}
+		//System.out.println("sending content!!!!"+content);
+		httpRequestBodyWriter.write(content);
+		httpRequestBodyWriter.close();
+		
+		// Reading from the HTTP response body
+		Scanner httpResponseScanner = new Scanner(urlConnection.getInputStream());
+		while(httpResponseScanner.hasNextLine()) {
+			System.out.println(httpResponseScanner.nextLine());
+		}
+		httpResponseScanner.close();		
+	}
+	
+	private static final String[] HEADERS_TO_TRY = { 
+		"X-Forwarded-For",
+		"Proxy-Client-IP",
+		"WL-Proxy-Client-IP",
+		"HTTP_X_FORWARDED_FOR",
+		"HTTP_X_FORWARDED",
+		"HTTP_X_CLUSTER_CLIENT_IP",
+		"HTTP_CLIENT_IP",
+		"HTTP_FORWARDED_FOR",
+		"HTTP_FORWARDED",
+		"HTTP_VIA",
+		"REMOTE_ADDR" };
+		
+	public static String getClientIpAddress(HttpServletRequest request) {
+		for (String header : HEADERS_TO_TRY) {
+		String ip = request.getHeader(header);
+		if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
+		return ip;
+		}
+		}
+		return request.getRemoteAddr();
 	}
 }

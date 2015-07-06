@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/fsxml-strainer.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mojo.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/lou.jar"/>
+	<classpathentry kind="lib" path="libs/servlet-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
