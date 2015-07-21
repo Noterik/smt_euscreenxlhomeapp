@@ -365,36 +365,57 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			}
 		}
 		
-		if(videoPath != null){
+		if(videoPath != null) {			
 			String rawVideoPath = videoPath + "/rawvideo/1";
-			FsNode video = Fs.getNode(videoPath);
+			FsNode node = Fs.getNode(videoPath);
 			FsNode rawvideo = Fs.getNode(rawVideoPath);
 			
 			String videoFilePath = rawvideo.getProperty("mount");
-			if (videoFilePath.indexOf("http://")==-1) {
-				Random randomGenerator = new Random();
-				Integer random= randomGenerator.nextInt(100000000);
-				String ticket = Integer.toString(random);
-
-				String videoFile= "/"+videoFilePath+"/"+video.getPath()+ "/rawvideo/1/raw.mp4";
+			String[] videos = videoFilePath.split(",");
+			String[] videoFilePathWithTicket = new String[videos.length];			
+			
+			for(int i = 0; i < videos.length; i++) {			
+				String video = videos[i];
 				
-				try{						
-					//System.out.println("CallingSendTicket");						
-					sendTicket(videoFile,ipAddress,ticket);}
-				catch (Exception e){}
-				
-				videoFilePath = "http://" + videoFilePath + ".noterik.com/progressive/" + videoFilePath + "/" + video.getPath() + "/rawvideo/1/raw.mp4?ticket="+ticket;
-			}
+				if (video.indexOf("http://")==-1) {
+					Random randomGenerator = new Random();
+					Integer random= randomGenerator.nextInt(100000000);
+					String ticket = Integer.toString(random);
+	
+					String videoFile= "/"+video+"/"+node.getPath()+ "/rawvideo/1/raw.mp4";
+					
+					try{						
+						//System.out.println("CallingSendTicket");						
+						sendTicket(videoFile,ipAddress,ticket);}
+					catch (Exception e){}
+					
+					videoFilePathWithTicket[i] = "http://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath() + "/rawvideo/1/raw.mp4?ticket="+ticket;
+				} else if (videoFilePath.indexOf(".noterik.com/progressive/") > -1) {
+					Random randomGenerator = new Random();
+					Integer random= randomGenerator.nextInt(100000000);
+					String ticket = Integer.toString(random);
+					
+					String videoFile = video.substring(video.indexOf("progressive")+11);
+					
+					try{						
+						//System.out.println("CallingSendTicket");						
+						sendTicket(videoFile,ipAddress,ticket);}
+					catch (Exception e){}
+					
+					videoFilePathWithTicket[i] = video+"?ticket="+ticket;	
+				} else {
+					videoFilePathWithTicket[i] = video;
+				}
+			} 
 			
 			
-			String poster = setEdnaMapping(video.getProperty("screenshot"));
-			String[] splits = videoFilePath.split(",");		
-			
+			String poster = setEdnaMapping(node.getProperty("screenshot"));
+	
 			JSONObject titleMessage = new JSONObject();
 			titleMessage.put("title", title);
 			
 			JSONObject videoMessage = new JSONObject();
-			videoMessage.put("src", splits[0]);
+			videoMessage.put("src", videoFilePathWithTicket[0]); //TODO: fix to take both videos into account!
 			videoMessage.put("title", title);
 			videoMessage.put("poster", poster);
 			
@@ -405,7 +426,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			}
 			
 			JSONObject linkMessage = new JSONObject();
-			linkMessage.put("id", video.getId());
+			linkMessage.put("id", node.getId());
 			
 			s.putMsg("player", "app", "setTitle(" + titleMessage + ")");
 			s.putMsg("player", "app", "setVideo(" + videoMessage + ")");
