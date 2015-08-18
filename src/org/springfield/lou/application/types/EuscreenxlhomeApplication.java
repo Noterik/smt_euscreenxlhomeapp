@@ -28,6 +28,9 @@ import org.springfield.lou.application.components.ComponentManager;
 import org.springfield.lou.application.types.conditions.AndCondition;
 import org.springfield.lou.application.types.conditions.EqualsCondition;
 import org.springfield.lou.application.types.conditions.FilterCondition;
+import org.springfield.lou.euscreen.config.Config;
+import org.springfield.lou.euscreen.config.ConfigEnvironment;
+import org.springfield.lou.euscreen.config.SettingNotExistException;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FSListManager;
@@ -43,6 +46,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	private HashMap<String, String> subtitleMappings;
 	public String ipAddress="";
 	public static boolean isAndroid;
+	private Config config;
 	
 	private Comparator<Node> titleComparator = new Comparator<Node>(){
 		@Override
@@ -60,6 +64,17 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
  	public EuscreenxlhomeApplication(String id) {
 		super(id); 
 		
+		try{
+			if(this.inDevelMode()){
+				config = new Config(ConfigEnvironment.DEVEL);
+			}else{
+				config = new Config();
+			}
+		}catch(SettingNotExistException snee){
+			snee.printStackTrace();
+		}
+		
+		this.addReferid("config", "/euscreenxlelements/config");
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
 		this.addReferid("header", "/euscreenxlelements/header");
 		this.addReferid("footer", "/euscreenxlelements/footer");
@@ -68,6 +83,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.addReferid("videocopyright", "/euscreenxlelements/videocopyright");
 		this.addReferid("fontawesome", "/euscreenxlelements/fontawesome");
 		this.addReferid("analytics", "/euscreenxlelements/analytics");
+		this.addReferid("urltransformer", "/euscreenxlelements/urltransformer");
 		
 		this.addReferidCSS("fontawesome", "/euscreenxlelements/fontawesome");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
@@ -96,6 +112,15 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
      }
  	
  	public void initializeMode(Screen s){
+ 		this.loadContent(s, "config", "config");
+ 		this.loadContent(s, "urltransformer", "urltransformer");
+ 		try {
+			s.putMsg("config", "", "update(" + config.getSettingsJSON() + ")");
+		} catch (SettingNotExistException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 		
  		if(!this.inDevelMode()){
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
 		} else {
