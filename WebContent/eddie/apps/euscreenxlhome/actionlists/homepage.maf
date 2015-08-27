@@ -4,6 +4,7 @@ setUrlTrigger(www.euscreen.eu@/lou/euscreen/,/lou/domain/webtv/html5application/
 setUrlTrigger(www.euscreenxl.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
 setUrlTrigger(beta.euscreenxl.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
 setUrlTrigger(beta.euscreen.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
+setUrlTrigger(pb.euscreenxl.eu@/lou/euscreen/,/lou/domain/webtv/html5application/euscreenxlhome)
 loadContent(screen,favicon)
 loadContent(screen,warning)
 loadContent(screen,videocopyright)
