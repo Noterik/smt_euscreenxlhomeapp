@@ -7,3 +7,4 @@ var Carousel = function(options){
 	});
 };
 Carousel.prototype = Object.create(Component.prototype);
+

@@ -161,3 +161,43 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
 		font-size: 1.5em;
 	}
 }
+
+/*home page popup styling*/
+#dialog-new {
+	width: 573px !important;
+    height: 248px !important;
+    position: fixed;
+    top: 24%;
+    left: 26%;
+    padding: 10px;
+	background-color: white;
+	z-index: 999;
+}
+
+#dialog-new>h2 {
+	color: #43ACE9;
+	text-align: center;
+	font-size: 31px;
+}
+
+#dialog-new>p {
+	font-size: 18px;
+}
+
+.ui-dialog-titlebar {
+	position: fixed;
+    top: 24%;
+    left: 71%;
+    
+}
+
+.ui-button {
+	border: none;
+    background-color: transparent;
+    color: white;
+}
+
+.ui-button-text {
+	font-size: 24px;
+}
+/*end of home page popup styling*/
