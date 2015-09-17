@@ -171,7 +171,7 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
     left: 26%;
     padding: 10px;
 	background-color: white;
-	z-index: 999;
+	z-index: 9;
 }
 
 #dialog-new>h2 {
@@ -187,17 +187,58 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
 .ui-dialog-titlebar {
 	position: fixed;
     top: 24%;
-    left: 71%;
-    
+    margin-left: 325px;
+    z-index: 999999;
+    color: black;
 }
 
 .ui-button {
 	border: none;
     background-color: transparent;
-    color: white;
+    color: black;
 }
 
 .ui-button-text {
 	font-size: 24px;
 }
+
+@media (min-width: 1440px){
+	.ui-dialog-titlebar {
+		position: fixed;
+	    top: 24%;
+	    margin-left: 375px;
+	    z-index: 999999;
+	    color: black;
+	}
+	#dialog-new {
+    	left: 31%;
+	}
+}
+
+@media (max-width: 1346px){
+	.ui-dialog-titlebar {
+		position: fixed;
+	    top: 24%;
+	    margin-left: 351px;
+	    z-index: 999999;
+	    color: black;
+	}
+	#dialog-new {
+    	left: 28%;
+	}
+}
+
+@media (max-width: 1024px){
+	.ui-dialog-titlebar {
+		position: fixed;
+	    top: 24%;
+	    margin-left: 388px;
+	    z-index: 999999;
+	    color: black;
+	}
+	#dialog-new {
+    	left: 24%;
+	}
+}
+
 /*end of home page popup styling*/
