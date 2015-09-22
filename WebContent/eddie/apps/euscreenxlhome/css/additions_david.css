@@ -168,7 +168,7 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
     height: 248px !important;
     position: fixed;
     top: 24%;
-    left: 26%;
+    left: 29%;
     padding: 10px;
 	background-color: white;
 	z-index: 9;
@@ -187,7 +187,7 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
 .ui-dialog-titlebar {
 	position: fixed;
     top: 24%;
-    margin-left: 325px;
+    margin-left: 27%;
     z-index: 999999;
     color: black;
 }
@@ -202,16 +202,20 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
 	font-size: 24px;
 }
 
+.ui-button-text:hover {
+	color: #43ACE9;
+}
+
 @media (min-width: 1440px){
 	.ui-dialog-titlebar {
 		position: fixed;
 	    top: 24%;
-	    margin-left: 375px;
+	    margin-left: 28%;
 	    z-index: 999999;
 	    color: black;
 	}
 	#dialog-new {
-    	left: 31%;
+    	left: 30%;
 	}
 }
 
@@ -219,12 +223,12 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
 	.ui-dialog-titlebar {
 		position: fixed;
 	    top: 24%;
-	    margin-left: 351px;
+	    margin-left: 27%;
 	    z-index: 999999;
 	    color: black;
 	}
 	#dialog-new {
-    	left: 28%;
+    	left: 29%;
 	}
 }
 
@@ -232,12 +236,25 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
 	.ui-dialog-titlebar {
 		position: fixed;
 	    top: 24%;
-	    margin-left: 388px;
+	    margin-left: 15.7%;
 	    z-index: 999999;
 	    color: black;
 	}
 	#dialog-new {
-    	left: 24%;
+    	left: 18%;
+	}
+}
+
+@media (max-width: 768px){
+	.ui-dialog-titlebar {
+		position: fixed;
+	    top: 16%;
+    	margin-left: 47.7%;
+	    z-index: 999999;
+	    color: black;
+	}
+	#dialog-new {
+    	left: 12.4%;
 	}
 }
 
