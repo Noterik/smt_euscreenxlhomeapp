@@ -168,10 +168,11 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
     height: 248px !important;
     position: fixed;
     top: 24%;
-    left: 29%;
+     left: 50%;
     padding: 10px;
 	background-color: white;
 	z-index: 9;
+	margin-left: -288px;
 }
 
 .ui-button-text:focus {
@@ -201,10 +202,13 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
 .ui-dialog-titlebar {
 	position: fixed;
     top: 24%;
-    margin-left: 26%;
+    width: 80px;
+    left: 50%;
     z-index: 999999;
+     margin-left: -40px;
+    margin-top: 200px;
     color: black;
-}
+}    
 
 .ui-button {
 	border: none;
@@ -214,6 +218,7 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
 
 .ui-button-text {
 	font-size: 24px;
+	color: #C6E2A0;
 }
 
 .ui-button-text:hover {
@@ -221,55 +226,43 @@ body.fullscreenactive .home .main .row .collection-viewer-tab .row.main-nav .med
 }
 
 @media (min-width: 1440px){
-	.ui-dialog-titlebar {
-		position: fixed;
-	    top: 24%;
-	    margin-left: 28%;
-	    z-index: 999999;
-	    color: black;
-	}
-	#dialog-new {
-    	left: 30%;
-	}
+
 }
 
 @media (max-width: 1346px){
-	.ui-dialog-titlebar {
-		position: fixed;
-	    top: 24%;
-	    margin-left: 27%;
-	    z-index: 999999;
-	    color: black;
-	}
-	#dialog-new {
-    	left: 29%;
-	}
+
 }
 
 @media (max-width: 1024px){
-	.ui-dialog-titlebar {
-		position: fixed;
-	    top: 24%;
-	    margin-left: 15.7%;
-	    z-index: 999999;
-	    color: black;
-	}
-	#dialog-new {
-    	left: 18%;
-	}
+
 }
 
 @media (max-width: 768px){
+
+}
+
+/*@media (max-width: 640px){
 	.ui-dialog-titlebar {
-		position: fixed;
-	    top: 16%;
-    	margin-left: 47.7%;
+	    position: fixed;
+	    top: 24%;
+	    width: 80px;
+	    left: 50%;
 	    z-index: 999999;
+	    margin-left: -40px;
+	    margin-top: 249px;
 	    color: black;
 	}
 	#dialog-new {
-    	left: 12.4%;
+	    width: 273px !important;
+	    height: 348px !important;
+	    position: fixed;
+	    top: 13%;
+	    left: 100%;
+	    padding: 10px;
+	    background-color: white;
+	    z-index: 16;
+	    margin-left: -277px;
 	}
-}
+}*/
 
 /*end of home page popup styling*/
