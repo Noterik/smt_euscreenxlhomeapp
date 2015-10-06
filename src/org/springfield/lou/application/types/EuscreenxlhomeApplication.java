@@ -1,3 +1,6 @@
+/**
+ * Version 1.0
+ */
 package org.springfield.lou.application.types;
 
 import java.io.BufferedWriter;
