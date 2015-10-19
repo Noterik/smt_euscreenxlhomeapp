@@ -237,6 +237,20 @@ body .home .main {
   	-o-background-size: cover;
  	 background-size: cover;
 }
+/*additional for the new slide*/
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg-9 {
+	background: url('/eddie/apps/euscreenxlhome/img/slides/warsaw portal banner.png') no-repeat;
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+ 	 background-size: cover;
+}
+/*additional for the new slide*/
+@media(min-width: 768px){
+	.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .carousel-caption h1.big2 {
+		margin-top: 175px !important;
+	}
+}
 .home .main .row .jumbotron .carousel .carousel-control {
   width: 6%;
 }
