@@ -399,7 +399,9 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			String[] videos = videoFilePath.split(",");
 			String[] videoFilePathWithTicket = new String[videos.length];			
 			
-			for(int i = 0; i < videos.length; i++) {			
+			//for(int i = 0; i < videos.length; i++){ //Temp workaround to only have 1 video instead of multiple
+			//This to prevent downloading of the second stream as the browser only plays out the first stream.
+			for (int i = 0; i < 1; i++) { 			
 				String video = videos[i];
 				
 				if (video.indexOf("http://")==-1) {
