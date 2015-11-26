@@ -114,6 +114,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
  	public void initializeMode(Screen s){
  		this.loadContent(s, "config", "config");
  		this.loadContent(s, "urltransformer", "urltransformer");
+ 		this.loadContent(s, "cookiesnotification");
  		try {
 			s.putMsg("config", "", "update(" + config.getSettingsJSON() + ")");
 		} catch (SettingNotExistException e) {
