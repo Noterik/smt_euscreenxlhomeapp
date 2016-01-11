@@ -7,11 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -19,60 +17,32 @@ import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.dom4j.Node;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.springfield.lou.application.Html5Application;
-import org.springfield.lou.application.components.ComponentManager;
-import org.springfield.lou.application.types.conditions.AndCondition;
-import org.springfield.lou.application.types.conditions.EqualsCondition;
-import org.springfield.lou.application.types.conditions.FilterCondition;
-import org.springfield.lou.euscreen.config.Config;
-import org.springfield.lou.euscreen.config.ConfigEnvironment;
-import org.springfield.lou.euscreen.config.SettingNotExistException;
-import org.springfield.lou.homer.LazyHomer;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FSListManager;
 import org.springfield.fs.Fs;
 import org.springfield.fs.FsNode;
+import org.springfield.lou.application.components.ComponentManager;
+import org.springfield.lou.application.types.conditions.AndCondition;
+import org.springfield.lou.application.types.conditions.EqualsCondition;
+import org.springfield.lou.application.types.conditions.FilterCondition;
+import org.springfield.lou.euscreen.application.AbstractEuscreenApplication;
+import org.springfield.lou.euscreen.config.SettingNotExistException;
+import org.springfield.lou.euscreen.contentloader.ContentLoader;
 import org.springfield.lou.screen.Screen;
 
-public class EuscreenxlhomeApplication extends Html5Application implements Observer{
+public class EuscreenxlhomeApplication extends AbstractEuscreenApplication implements Observer{
 
-	private FSList allNodes;
 	private static Boolean wantedna = true;
 	private HashMap<String, String> categoryURLMappings;
 	private HashMap<String, String> subtitleMappings;
 	public String ipAddress="";
 	public static boolean isAndroid;
-	private Config config;
-	
-	private Comparator<Node> titleComparator = new Comparator<Node>(){
-		@Override
-		public int compare(Node arg0, Node arg1) {
-			try{
-				String title0 = arg0.selectSingleNode("properties/title").getText();
-				String title1 = arg1.selectSingleNode("properties/title").getText();
-				return title0.compareTo(title1);
-			}catch(Exception e){
-				return -1;
-			}
-		}
-	};
 		
  	public EuscreenxlhomeApplication(String id) {
 		super(id); 
-		
-		try{
-			if(this.inDevelMode()){
-				config = new Config(ConfigEnvironment.DEVEL);
-			}else{
-				config = new Config();
-			}
-		}catch(SettingNotExistException snee){
-			snee.printStackTrace();
-		}
 		
 		this.addReferid("config", "/euscreenxlelements/config");
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
@@ -110,13 +80,31 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
  	 public String getFavicon() {
          return "/eddie/apps/euscreenxlelements/img/favicon.png";
      }
+ 	 
+ 	 /**
+ 	  * This function loads the dynamic content from the filesystem. 
+ 	  * The contentloader loads all the "component" data for a given "page"
+ 	  * The ContentLoader class is contained inside deps/euscreen_helper.jar and the code can be found at:
+ 	  * https://github.com/Noterik/euscreen_helper
+ 	  * 
+ 	  * @param Screen s
+ 	  */
+ 	 public void loadContentLoader(Screen s){
+ 		//ContentLoader takes two arguments: Screen s and String pageId. The page id is used to retrieve the correct page from /domain/euscreenxl/user/cms/page/<pageId>
+ 		ContentLoader cLoader = new ContentLoader(s, "home");
+ 		
+ 		//This inserts the HTML and JS of the clientside component in the client/DOM. 
+		cLoader.render();
+		//This syncs the @JSONFields on the clientside and serverside. 
+		cLoader.sync();
+ 	 }
  	
  	public void initializeMode(Screen s){
  		this.loadContent(s, "config", "config");
  		this.loadContent(s, "urltransformer", "urltransformer");
  		this.loadContent(s, "cookiesnotification");
  		try {
-			s.putMsg("config", "", "update(" + config.getSettingsJSON() + ")");
+			s.putMsg("config", "", "update(" + this.getConfig().getSettingsJSON() + ")");
 		} catch (SettingNotExistException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,7 +121,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
  		s.putMsg("collectionviewer", "", "initTooltips()");
  	}
 	
-	public void initializeScreen(Screen s){				
+	public void initializeScreen(Screen s){		
 		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
 			loadContent(s, "footer");
 		}else{
@@ -146,10 +134,6 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	public void setDeviceTablet(Screen s){
 		s.putMsg("collectionviewer", "app", "setDevice(tablet)");
 	}
-	
-	private boolean inDevelMode() {
-    	return LazyHomer.inDeveloperMode();
-    }
 	
 	public void setGridSize(Screen s, String content){
 		System.out.println("EuscreenxlhomeApplication.setGridSize(" + content + ")");

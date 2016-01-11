@@ -1,12 +1,15 @@
 <?xml version="1.0" ?>
-<project name="smt_euscreenxlhomeapp" default="deploy-war">
+<project name="smt_euscreenxlhomeapp" default="build-war">
 	
 	<property name="root.dir" value="." />
 	<property name="sources.dir" value="${root.dir}/src" />
 	<property name="dist.dir" value="${root.dir}/dist" />
 	<property name="deps.dir" value="${root.dir}/deps" />
+	<property name="deps.unpack.tmp.dir" value="${root.dir}/tmp" />
 	<property name="build.dir" value="${root.dir}/build" />
 	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="webcontent.build.dir" value="${build.dir}/WebContent" />
+	<property name="webcontent.build.eddie.dir" value="${webcontent.build.dir}/eddie/apps/euscreenxlhome" />
 	<property name="lib.dir" value="${root.dir}/libs" />
 	<property name="test.sources.dir" value="${root.dir}/test-src" />
 	<property name="test.build.dir" value="${root.dir}/test-build" />
@@ -23,7 +26,7 @@
 	
 	<!-- Define package name and location -->
 	<property name="package.name.jar" value="${ant.project.name}.jar"/>
-	<property name="package.location.jar" value="${build.dir}/${package.name.jar}"/>
+	<property name="package.location.jar" value="${build.dir}/WebContent/WEB-INF/lib/${package.name.jar}"/>
 	<property name="package.name.war" value="${ant.project.name}.war"/>
 	<property name="package.location.war" value="${dist.dir}/${package.name.war}"/>
 	
@@ -36,6 +39,7 @@
 		<delete dir="${build.dir}" />
 		<delete dir="${classes.dir}" />
 		<delete dir="${webcontent.lib.dir}" />
+		<delete dir="${deps.unpack.tmp.dir}" />
 	</target>
 	
 	<!-- Removes all test directories -->
@@ -80,6 +84,7 @@
 	<!-- still dependent on local libraries -->
 	<path id="lib.classpath">
 		<fileset id="lib.fileset" dir="${lib.dir}" includes="*.jar"/>
+		<fileset id="deps.fileset" dir="${deps.dir}" includes="*.jar"/>
 	</path>
 
 	<!-- Creates all necessary directories -->
@@ -110,7 +115,7 @@
 	
 	<!-- Copile java code -->
 	<target name="compile" depends="compile.init">
-	  <javac srcdir="${sources.dir}" destdir="${classes.dir}" debug="on">
+	  <javac srcdir="${sources.dir}" destdir="${build.dir}/classes" debug="on">
 	    <classpath>
 	    	<path refid="provided.classpath"/>
 	        <path refid="compile.classpath"/>
@@ -119,16 +124,36 @@
 	  </javac>
 	</target>
 	
+	<!-- This unpacks the jars inside the deps folder and puts them inside the tmp folder -->
 	<target name="unpack-deps">
-		<unzip dest="${classes.dir}">
+		<mkdir dir="${deps.unpack.tmp.dir}" />
+		<unzip dest="${deps.unpack.tmp.dir}">
 		    <fileset dir="${deps.dir}">
 		        <include name="**/*.jar"/>
 		    </fileset>
 		</unzip>
 	</target>
+	
+	<!-- This copies the deps assets into the build directory -->
+	<target name="copy-deps" depends="unpack-deps">
+		<copy todir="${build.dir}/classes">
+			<fileset dir="${deps.unpack.tmp.dir}"/>
+		</copy>
+		
+		<copy todir="${webcontent.build.eddie.dir}">
+			<fileset dir="${deps.unpack.tmp.dir}/client"/>
+		</copy>
+	</target>
+	
+	<!-- This copies the WebContent folder into the build directory -->
+	<target name="copy-webcontent">
+		<copy todir="${build.dir}/WebContent">
+			<fileset dir="${webcontent.dir}" />
+		</copy>
+	</target>
 
 	<!-- Jar package build -->
-	<target name="build" depends="compile, unpack-deps">
+	<target name="build" depends="compile, copy-deps, copy-webcontent">
 		<delete file="${package.location.jar}"/>
 		<jar jarfile="${package.location.jar}" basedir="${classes.dir}">
 			<manifest>
@@ -139,10 +164,9 @@
 	</target>
 
 	<!-- War package build -->
-	<target name="deploy-war" depends="clean, build">
-		<copy todir="${webcontent.lib.dir}" file="${package.location.jar}" />
-		<war destfile="${package.location.war}" webxml="${webcontent.dir}/WEB-INF/web.xml">
-			<fileset dir="${webcontent.dir}">
+	<target name="build-war" depends="clean, build">
+		<war destfile="${package.location.war}" webxml="${webcontent.build.dir}/WEB-INF/web.xml">
+			<fileset dir="${webcontent.build.dir}">
 			 <exclude name="WEB-INF/lib/lou.jar" />
 			 <exclude name="WEB-INF/lib/mojo.jar" />
 			 <exclude name="WEB-INF/lib/springfield-tools.jar" />

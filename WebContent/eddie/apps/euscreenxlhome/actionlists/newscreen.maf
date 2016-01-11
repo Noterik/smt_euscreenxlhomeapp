@@ -1,3 +1,4 @@
+callServer(loadContentLoader,screen,content)
 loadContent(screen,favicon)
 loadContent(screen,warning)
 loadContent(screen,videocopyright)
