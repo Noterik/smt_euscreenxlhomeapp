@@ -97,6 +97,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		this.categoryURLMappings.put("video-highlights", "/domain/euscreenxl/user/eu_agency/collection/highlights/teaser");
 		this.categoryURLMappings.put("in-the-news", "/domain/euscreenxl/user/eu_agency/collection/inthenews/teaser");
 		this.categoryURLMappings.put("series-picks", "/domain/euscreenxl/user/*/*");
+		this.categoryURLMappings.put("video-posters", "/domain/euscreenxl/user/eu_agency/collection/videoposters/teaser");
 		
 		this.subtitleMappings = new HashMap<String, String>();
 		this.subtitleMappings.put("EUS_9BD29393D326CB022C154E86A2371BF37143C42B", "/eddie/apps/euscreenxlhome/img/subtitles/EUS_9BD29393D326CB022C154E86A2371BF37143C42B.vtt");
@@ -136,10 +137,12 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	public void initializeScreen(Screen s){				
 		if(s.getCapabilities() != null && s.getCapabilities().getDeviceModeName() == null){
 			loadContent(s, "footer");
+			
 		}else{
 			removeContent(s, "footer");
 		}
 		s.putMsg("header", "", "setActivePage(home)");
+		loadContent(s, "overlaydialog");
 		loadContent(s, "analytics");
 	}
 	
@@ -223,10 +226,14 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 					item.put("screenshot", null);
 				}
 				item.put("description", org.springfield.fs.FsEncoding.decode(node.getProperty("title")));
+				item.put("type", org.springfield.fs.FsEncoding.decode(node.getProperty("basedontype")));
+				item.put("path", node.getPath());
 			}else if(node.getName().equals("video")){
 				item.put("id", node.getId());
 				item.put("title", org.springfield.fs.FsEncoding.decode(node.getProperty(FieldMappings.getSystemFieldName("title"))));
 				item.put("description", org.springfield.fs.FsEncoding.decode(node.getProperty(FieldMappings.getSystemFieldName("title"))));
+				item.put("type", "video");
+				item.put("path", node.getPath());
 				try{
 					item.put("screenshot", setEdnaMapping(node.getProperty("screenshot")));
 				}catch(Exception e){
@@ -265,11 +272,20 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 				this.setInTheNews(s, collectionNodes, params);
 			}else if(category.equals("series-picks")){
 				this.setSeriesPicks(s, collectionNodes, params);
+			}else if(category.equals("video-posters")){
+				this.setVideoPosters(s, collectionNodes, params);
 			}
 		}catch(Exception e){ 
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void setVideoPosters(Screen s, FSList collectionNodes, JSONObject params){
+		List<FsNode> nodes = collectionNodes.getNodes();	
+		s.setProperty("chunkRange", null);
+		setNodes(s, nodes, true);
+		s.putMsg("collectionviewer", "app", "createGrid()");
 	}
 	
 	private void setSeriesPicks(Screen s, FSList collectionNodes, JSONObject searchParameters){
@@ -367,33 +383,36 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		}
 	}
 	
-	public void playVideo(Screen s, String id){
-		System.out.println("CollectionrutgerApplication.playVideo(" +  id + ")");
-		String uri = (String) s.getProperty("uri");
-		System.out.println("URI: " + uri);
-		String teaserPath = uri + "/" + id;
-		FsNode teaser = Fs.getNode(teaserPath);
-		String videoPath = null;
-		String title = null;
-		
-		if(teaser != null){
-			title = org.springfield.fs.FsEncoding.decode(teaser.getProperty("title"));
-			videoPath = teaser.getProperty("basedon").replace("'", "");
-		}else{
-			String allURI = "/domain/euscreenxl/user/*/*";
-			
-			FSList fslist = FSListManager.get(allURI);
-			List<FsNode> nodes = fslist.getNodesFiltered(id.toLowerCase()); // find the item
-			if (nodes!=null && nodes.size()>0) {
-				FsNode n = (FsNode)nodes.get(0);
-				title = org.springfield.fs.FsEncoding.decode(n.getProperty(FieldMappings.getSystemFieldName("title")));
-				videoPath = n.getPath();
+	public void actionPlayitem(Screen s, String message){
+		System.out.println("playItem( " + message + " )");
+		JSONObject data = (JSONObject) JSONValue.parse(message);
+		if(data != null){
+			String type = (String) data.get("type");
+			String path = (String) data.get("path");
+			if(type.equals("video")){
+				playVideo(s, path);
+			}else if(type.equals("videoposter")){
+				playVideoPoster(s, path);
 			}
 		}
+	}
+	
+	private void playVideo(Screen s, String path){
 		
-		if(videoPath != null) {			
-			String rawVideoPath = videoPath + "/rawvideo/1";
-			FsNode node = Fs.getNode(videoPath);
+		String title;
+		FsNode node;
+		if(path.contains("/video/")){
+			node = Fs.getNode(path);
+			title = org.springfield.fs.FsEncoding.decode(node.getProperty(FieldMappings.getSystemFieldName("title")));
+		}else{
+			FsNode teaserNode = Fs.getNode(path);
+			String videoPath = teaserNode.getProperty("basedon").replace("'", "");
+			node = Fs.getNode(videoPath);
+			title = org.springfield.fs.FsEncoding.decode(teaserNode.getProperty(FieldMappings.getSystemFieldName("title")));
+		}
+		
+		if(node != null){
+			String rawVideoPath = node.getPath() + "/rawvideo/1";
 			FsNode rawvideo = Fs.getNode(rawVideoPath);
 			
 			String videoFilePath = rawvideo.getProperty("mount");
@@ -459,6 +478,22 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			s.putMsg("player", "app", "setTitle(" + titleMessage + ")");
 			s.putMsg("player", "app", "setVideo(" + videoMessage + ")");
 			s.putMsg("player", "app", "setLink(" + linkMessage + ")");
+		}else{
+			System.out.println("This video doesn't exist!");
+		}
+	}
+	
+	private void playVideoPoster(Screen s, String path){
+		System.out.println("playVideoPoster(" + path + ")");
+		FsNode teaserNode = Fs.getNode(path);
+		if(teaserNode != null){
+			FsNode videoPosterNode = Fs.getNode(teaserNode.getProperty("basedon"));
+			JSONObject message = new JSONObject();
+			message.put("html", videoPosterNode.getProperty("html"));
+			message.put("wrap", true);
+			message.put("visible", true);
+			s.putMsg("overlaydialog", "", "update(" + message + ")");
+			System.out.println("VIDEO POSTER XML: " + videoPosterNode.asXML());
 		}
 	}
 	

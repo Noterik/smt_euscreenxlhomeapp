@@ -1,6 +1,6 @@
 <script type="text/template" id="item-template">
 	<% if(item.description){ %>
-    <div class="ntk-layout-item media-item">
+    <div class="ntk-layout-item media-item" data-type="<%= item.type %>" data-path="<%= item.path %>">
     	<div class="media-wrapper">
             <a class="modal-button">
                 <img src="<% if(item.screenshot){print(item.screenshot)}else{print('http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif')} %>" class="media-object img-responsive">
@@ -50,7 +50,8 @@
     				<li class="active"><a href="#video-highlights" role="tab" data-toggle="tab">Video Highlights</a></li>
     				<li><a href="#in-the-news" role="tab" data-toggle="tab">In The News</a></li>
     				<li><a href="#series-picks" role="tab" data-toggle="tab">Series Picks</a></li>
-    			</ul>
+    				<li><a href="#video-posters" role="tab" data-toggle="tab">Video Posters</a></li>
+     			</ul>
             </div>
 
             <!-- action icons -->
@@ -107,6 +108,11 @@
 						<li><a href="#" data-series="Man Alive" data-provider="BBC">Man Alive</a></li>
 						<li><a href="#" data-series="Tonight" data-provider="BBC">Tonight</a></li>
 						<li><a href="#" data-id="EUS_E89B933828211400F3EC2161D635B2E3">Les Actualit&eacute;s Fran&ccedil;aises</a></li>
+					</ul>
+				</div>
+				<div id="video-posters" class="tab-pane">
+					<ul class="list-inline">
+						<li class="active"><a href="#" data-topic="Videoposter">Recent</a></li>
 					</ul>
 				</div>
             </div>
