@@ -419,6 +419,43 @@ body .home .main {
   border-left: 2px solid #f2f2f2;
   border-right: 2px solid #f2f2f2;
 }
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .slider-links-container {
+	width: 300px;
+	height: 210px;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .slider-links-container .small-container {
+    height: 70px;
+    padding: 15px;
+    position: relative;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .slider-links-container .small-container .links-p {
+    margin: 0;
+    color: #FFF;
+    font-size: 16px;
+    width: 245px;
+    float:left;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .slider-links-container .small-container .links-a-2 {
+    margin: 0;
+    color: #b9e79c;
+    font-size: 12px;
+    width: 245px;
+    float:left;
+}
+.home .main .row .jumbotron .carousel .carousel-inner .item .bg .wrap .slider-links-container .small-container .links-arrow-div {
+    margin: 0;
+    width: 9px;
+    height: 14px;
+    position: absolute;
+    top: 30px;
+    right: 18px;
+    background-image: url('/eddie/apps/euscreenxlelements/img/content/myeuscreenadditionalicons/small-arrow.png');
+    background-repeat: no-repeat;
+}
 .fs {
   margin-bottom: 6px;
   overflow-x: hidden;
