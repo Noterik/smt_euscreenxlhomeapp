@@ -446,6 +446,7 @@ body .home .main {
     font-size: 12px;
     width: 245px;
     float:left;
+    font-style: italic;
 }
 .home .main .row .jumbotron .carousel .carousel-inner .slider-links-container .small-container .links-arrow-div {
     margin: 0;
