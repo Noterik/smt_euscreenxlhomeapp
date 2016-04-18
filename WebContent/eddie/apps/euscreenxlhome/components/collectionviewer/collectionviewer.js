@@ -164,6 +164,18 @@ Collectionviewer.prototype.createGrid = function(){
 	eddie.putLou('', 'setGridSize(' + size + ')');
 	
 };
+
+Collectionviewer.prototype.playItem = function(item){
+	var message = {
+		type: item.type,
+		path: item.path
+	}
+	
+	console.log("MESSAGE: " , message);
+	eddie.putLou("", "playItem(" + JSON.stringify(message) + ")");
+
+}
+
 Collectionviewer.prototype.appendItems = function(data){
 	var self = this;
 	var items = JSON.parse(data);
@@ -174,13 +186,15 @@ Collectionviewer.prototype.appendItems = function(data){
 		itemElement.on('click', 
 			(function(item){
 				return function(){
+					console.log("CLICK!");
 					if(self.device != "tablet"){
 						ga('send', 'event', 'videos', 'open', 'home-page-videos', item.id);
-						eddie.putLou("", "playVideo(" + item.id + ")");
+						self.playItem(item);
 					}else{
-						if(jQuery(this).data('touched')) {
+						var $this = $(this);
+						if($this.data('touched')) {
 							ga('send', 'event', 'videos', 'open', 'home-page-videos', item.id);
-		                    eddie.putLou("", "playVideo(" + item.id + ")");
+							self.playItem(item);
 		                }else{
 		                	self.element.find('.media-item').data('touched', false);
 		                	jQuery(this).data('touched', true);
