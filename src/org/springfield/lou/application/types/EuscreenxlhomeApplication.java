@@ -530,7 +530,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	//Themis NISV
 	/////////////////////////////////////////////////////////////////////////////////////
 	private static void sendTicket(String videoFile, String ipAddress, String ticket) throws IOException {
-		URL serverUrl = new URL("http://82.94.187.227:8001/acl/ticket");
+		URL serverUrl = new URL("http://stream.noterik.com:8080/lenny/acl/ticket");
 		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
 		
 		Long Sytime = System.currentTimeMillis();
