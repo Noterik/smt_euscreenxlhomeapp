@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -424,7 +426,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			for (int i = 0; i < 1; i++) { 			
 				String video = videos[i];
 				
-				if (video.indexOf("http://")==-1) {
+				if (video.indexOf("http://") == -1 && video.indexOf("https://") == -1) {
 					Random randomGenerator = new Random();
 					Integer random= randomGenerator.nextInt(100000000);
 					String ticket = Integer.toString(random);
@@ -530,7 +532,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	//Themis NISV
 	/////////////////////////////////////////////////////////////////////////////////////
 	private static void sendTicket(String videoFile, String ipAddress, String ticket) throws IOException {
-		URL serverUrl = new URL("http://stream.noterik.com:8080/lenny/acl/ticket");
+		URL serverUrl = new URL("http://ticket.noterik.com:8080/lenny/acl/ticket");
 		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
 		
 		Long Sytime = System.currentTimeMillis();
@@ -540,6 +542,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		// Indicate that we want to write to the HTTP request body
 		
 		urlConnection.setDoOutput(true);
+		urlConnection.setRequestProperty("Content-Type", "text/xml");
 		urlConnection.setRequestMethod("POST");
 		videoFile=videoFile.substring(1);
 		
@@ -565,9 +568,11 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			+ "<role>user</role>"
 			+ "<expiry>"+expiry+"</expiry><maxRequests>1</maxRequests></properties></fsxml>";
 		}
-		//System.out.println("sending content!!!!"+content);
+		System.out.println(getCurrentTimeStamp()+" sending content "+content);
 		httpRequestBodyWriter.write(content);
 		httpRequestBodyWriter.close();
+		
+		System.out.println("response code = "+urlConnection.getResponseCode());
 		
 		// Reading from the HTTP response body
 		Scanner httpResponseScanner = new Scanner(urlConnection.getInputStream());
@@ -598,5 +603,12 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		}
 		}
 		return request.getRemoteAddr();
+	}
+	
+	public static String getCurrentTimeStamp() {
+	    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");//dd/MM/yyyy
+	    Date now = new Date();
+	    String strDate = sdfDate.format(now);
+	    return strDate;
 	}
 }
