@@ -14,14 +14,47 @@ Player.prototype.setTitle = function(data){
 	var params = JSON.parse(data);
 	this.element.find('h4.modal-title').html(params.title);
 };
+
 Player.prototype.setVideo = function(data){
+	console.log("SETVIDEO CALLED IN HOME2");
 	var self = this;
 	var params = JSON.parse(data);
 	console.log(params);
 	this.element.find('video').remove();
 	
-	var filledTemplate = _.template(this.template, {video: params});
-	this.element.find('.modal-body.media-player').html(filledTemplate);
+	
+	
+	console.log("VIDEO2 DANIEL");
+	console.log(params);
+	console.log("END2 VIDEO2 "+params.src);
+	
+	var videoid=params.src;
+	var pos=videoid.indexOf("?");
+	var ticket = "";
+	if (pos!=-1) {
+		ticket = videoid.substring(pos+1);
+		videoid=videoid.substring(0,pos);
+	}
+	var duration=params.duration;
+	var maggieid=params.maggieid;
+	
+	console.log("TICKET="+ticket);
+	console.log("SRC="+videoid);
+
+//	console.log("END2 VIDEO2 "+params..src+" "+params.screenshot+" duration="+params.sources[0].duration);
+	
+	//var filledTemplate = _.template(this.template, {video: params});
+	//this.element.find('.modal-body.media-player').html(filledTemplate);
+	
+	
+	//var manurl = "https://videoeditor.noterik.com/manifest/createmanifest.php?src=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4&duration=86360&id=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4";
+	var manurl = "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid="+videoid+"&"+ticket+"&duration="+duration+"&maggieid="+maggieid;
+
+	
+	var html = "<div class=\"player\" id=\"viewer\"></div><script>new europeanamediaplayer.default(document.getElementById(\"viewer\"), {}, {editor: \"http://video-editor.eu\", manifest: \""+manurl+"\"});</script>";
+
+	
+	this.element.find('.modal-body.media-player').html(html);
 	this.element.find('.modal').modal('show');
 	
 	if(jQuery('body').hasClass('fullscreenactive')){
@@ -40,6 +73,8 @@ Player.prototype.setVideo = function(data){
 	}
 	
 };
+
+
 Player.prototype.setLink = function(data){
 	console.log("Player.prototype.setLink(" + data + ")");
 	var params = JSON.parse(data);

@@ -432,12 +432,12 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 					String ticket = Integer.toString(random);
 	
 					String videoFile= "/"+video+"/"+node.getPath()+ "/rawvideo/1/raw.mp4";
-					
+					videoFile = videoFile.replace("//","/");	
 					try{						
-						//System.out.println("CallingSendTicket");						
+						System.out.println("CallingSendTicket="+videoFile);						
 						sendTicket(videoFile,ipAddress,ticket);}
 					catch (Exception e){}
-					
+
 					videoFilePathWithTicket[i] = "http://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath() + "/rawvideo/1/raw.mp4?ticket="+ticket;
 				} else if (videoFilePath.indexOf(".noterik.com/progressive/") > -1) {
 					Random randomGenerator = new Random();
@@ -464,9 +464,20 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			titleMessage.put("title", title);
 			
 			JSONObject videoMessage = new JSONObject();
+			
+			
 			videoMessage.put("src", videoFilePathWithTicket[0]); //TODO: fix to take both videos into account!
 			videoMessage.put("title", title);
+
 			videoMessage.put("poster", poster);
+			
+			FsNode maggieNode = Fs.getNode(node.getPath());
+		//	System.out.println("MAGGIENODE="+maggieNode.asXML());
+			String duration = maggieNode.getProperty(FieldMappings.getSystemFieldName("duration"));
+			System.out.println("DURATION="+timeToSeconds(duration));
+			videoMessage.put("duration",""+timeToSeconds(duration));
+			videoMessage.put("maggieid", maggieNode.getPath());
+			// daniel 
 			
 			System.out.println("ID: " + id);
 			
@@ -476,6 +487,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			
 			JSONObject linkMessage = new JSONObject();
 			linkMessage.put("id", node.getId());
+			System.out.println("WWWWOOOOO2="+node.getPath());
 			
 			s.putMsg("player", "app", "setTitle(" + titleMessage + ")");
 			s.putMsg("player", "app", "setVideo(" + videoMessage + ")");
@@ -528,9 +540,6 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		return "";
 	}
 	
-	/////////////////////////////////////////////////////////////////////////////////////
-	//Themis NISV
-	/////////////////////////////////////////////////////////////////////////////////////
 	private static void sendTicket(String videoFile, String ipAddress, String ticket) throws IOException {
 		URL serverUrl = new URL("http://ticket.noterik.com:8080/lenny/acl/ticket");
 		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
@@ -566,7 +575,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			content = "<fsxml><properties><ticket>"+ticket+"</ticket>"
 			+ "<uri>/"+videoFile+"</uri><ip>"+ipAddress+"</ip> "
 			+ "<role>user</role>"
-			+ "<expiry>"+expiry+"</expiry><maxRequests>1</maxRequests></properties></fsxml>";
+			+ "<expiry>"+expiry+"</expiry><maxRequests>100</maxRequests></properties></fsxml>";
 		}
 		System.out.println(getCurrentTimeStamp()+" sending content "+content);
 		httpRequestBodyWriter.write(content);
@@ -610,5 +619,28 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 	    Date now = new Date();
 	    String strDate = sdfDate.format(now);
 	    return strDate;
+	}
+	
+	private int timeToSeconds(String time) {
+		String[] parts = time.split(":");
+		if (parts.length==3) {
+			try {
+				int sec = Integer.parseInt(parts[2]);
+				int min = Integer.parseInt(parts[1]);
+				int hour = Integer.parseInt(parts[0]);
+				return (sec+(min*60)+(hour*3600));
+			} catch(Exception e) {
+				return 3600; // default to a hour?
+			}
+		} else if (parts.length==2) {
+			try {
+				int sec = Integer.parseInt(parts[1]);
+				int min = Integer.parseInt(parts[0]);
+				return (sec+(min*60));
+			} catch(Exception e) {
+				return 3600; // default to a hour?
+			}
+		}
+		return 3600;
 	}
 }

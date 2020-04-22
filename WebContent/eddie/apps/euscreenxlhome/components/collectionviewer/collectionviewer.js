@@ -188,12 +188,10 @@ Collectionviewer.prototype.appendItems = function(data){
 				return function(){
 					console.log("CLICK!");
 					if(self.device != "tablet"){
-						ga('send', 'event', 'videos', 'open', 'home-page-videos', item.id);
 						self.playItem(item);
 					}else{
 						var $this = $(this);
 						if($this.data('touched')) {
-							ga('send', 'event', 'videos', 'open', 'home-page-videos', item.id);
 							self.playItem(item);
 		                }else{
 		                	self.element.find('.media-item').data('touched', false);
