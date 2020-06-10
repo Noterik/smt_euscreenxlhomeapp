@@ -575,7 +575,7 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 			content = "<fsxml><properties><ticket>"+ticket+"</ticket>"
 			+ "<uri>/"+videoFile+"</uri><ip>"+ipAddress+"</ip> "
 			+ "<role>user</role>"
-			+ "<expiry>"+expiry+"</expiry><maxRequests>100</maxRequests></properties></fsxml>";
+			+ "<expiry>"+expiry+"</expiry><maxRequests>1</maxRequests></properties></fsxml>";
 		}
 		System.out.println(getCurrentTimeStamp()+" sending content "+content);
 		httpRequestBodyWriter.write(content);

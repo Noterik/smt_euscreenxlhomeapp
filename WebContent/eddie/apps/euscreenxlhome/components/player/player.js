@@ -16,17 +16,11 @@ Player.prototype.setTitle = function(data){
 };
 
 Player.prototype.setVideo = function(data){
-	console.log("SETVIDEO CALLED IN HOME2");
 	var self = this;
 	var params = JSON.parse(data);
 	console.log(params);
 	this.element.find('video').remove();
 	
-	
-	
-	console.log("VIDEO2 DANIEL");
-	console.log(params);
-	console.log("END2 VIDEO2 "+params.src);
 	
 	var videoid=params.src;
 	var pos=videoid.indexOf("?");
@@ -38,22 +32,59 @@ Player.prototype.setVideo = function(data){
 	var duration=params.duration;
 	var maggieid=params.maggieid;
 	
-	console.log("TICKET="+ticket);
-	console.log("SRC="+videoid);
-
-//	console.log("END2 VIDEO2 "+params..src+" "+params.screenshot+" duration="+params.sources[0].duration);
-	
-	//var filledTemplate = _.template(this.template, {video: params});
-	//this.element.find('.modal-body.media-player').html(filledTemplate);
-	
-	
 	//var manurl = "https://videoeditor.noterik.com/manifest/createmanifest.php?src=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4&duration=86360&id=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4";
 	var manurl = "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid="+videoid+"&"+ticket+"&duration="+duration+"&maggieid="+maggieid;
 
-	
-	var html = "<div class=\"player\" id=\"viewer\"></div><script>new europeanamediaplayer.default(document.getElementById(\"viewer\"), {}, {editor: \"http://video-editor.eu\", manifest: \""+manurl+"\"});</script>";
+	var user = "";
 
+	var cookie = document.cookie;
+	var re = /smt_euscreenxlapp_user=[a-zA-Z0-9]+/;
+	var rs;
+
+	if ((rs = re.exec(cookie)) !== null) {
+		if (rs.index === re.lastIndex) {
+			re.lastIndex++;
+		}
+		// eg m[0] etc.
+	}
+	if (rs) {
+		var splitedRegexResult = rs[0].split('=');
+		user = splitedRegexResult[1];
+	}
 	
+	var hash = "";
+	re2 = /smt_euscreenxlapp_hash=[a-zA-Z0-9]+/;
+	var rs2;
+	
+	if ((rs2 = re2.exec(cookie)) !== null) {
+		if (rs2.index === re2.lastIndex) {
+			re2.lastIndex++;
+		}
+		// eg m[0] etc.
+	}
+	if (rs2) {
+		var splitedRegexResult2 = rs2[0].split('=');
+		hash = splitedRegexResult2[1];
+	}
+
+	if (user != "" && hash != "") {
+		var html = "<div class=\"player\" id=\"viewer\"></div><script>new EuropeanaMediaPlayer(document.getElementById(\"viewer\"), {manifest: \""
+				+ manurl + "\"}, {editor: \"http://video-editor.eu/user/"
+				+ user
+				+ "/hash/"
+				+ hash
+				+ "\", manifest: \""
+				+ manurl
+				+ "\"});</script>";
+
+	} else {
+		var html = "<div class=\"player\" id=\"viewer\"></div><script>new EuropeanaMediaPlayer(document.getElementById(\"viewer\"), {manifest: \""
+				+ manurl + "\"}, {editor: \"http://euscreen.eu/myeuscreen.html\"});</script>";
+	}
+	
+	
+	//var html = "<div class=\"player\" id=\"viewer\"></div><script>new europeanamediaplayer.default(document.getElementById(\"viewer\"), {}, {editor: \"http://video-editor.eu\", manifest: \""+manurl+"\"});</script>";
+
 	this.element.find('.modal-body.media-player').html(html);
 	this.element.find('.modal').modal('show');
 	
