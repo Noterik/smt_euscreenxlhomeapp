@@ -33,7 +33,7 @@ Player.prototype.setVideo = function(data){
 	var maggieid=params.maggieid;
 	
 	//var manurl = "https://videoeditor.noterik.com/manifest/createmanifest.php?src=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4&duration=86360&id=http://openbeelden.nl/files/09/9983.9970.WEEKNUMMER403-HRE0001578C.mp4";
-	var manurl = "https://beta.qandr.eu/euscreenxlmanifestservlet/?videoid="+videoid+"&"+ticket+"&duration="+duration+"&maggieid="+maggieid;
+	var manurl = "https://embd.eu/euscreenxlmanifestservlet/?videoid="+videoid+"&"+ticket+"&duration="+duration+"&maggieid="+maggieid;
 
 	var user = "";
 
