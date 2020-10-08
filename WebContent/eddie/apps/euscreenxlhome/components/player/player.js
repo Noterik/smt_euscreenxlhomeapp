@@ -69,7 +69,7 @@ Player.prototype.setVideo = function(data){
 
 	if (user != "" && hash != "") {
 		var html = "<div class=\"player\" id=\"viewer\"></div><script>new EuropeanaMediaPlayer(document.getElementById(\"viewer\"), {manifest: \""
-				+ manurl + "\"}, {editor: \"http://video-editor.eu/user/"
+				+ manurl + "\"}, {editor: \"https://video-editor.eu/user/"
 				+ user
 				+ "/hash/"
 				+ hash
@@ -79,11 +79,11 @@ Player.prototype.setVideo = function(data){
 
 	} else {
 		var html = "<div class=\"player\" id=\"viewer\"></div><script>new EuropeanaMediaPlayer(document.getElementById(\"viewer\"), {manifest: \""
-				+ manurl + "\"}, {editor: \"http://euscreen.eu/myeuscreen.html\"});</script>";
+				+ manurl + "\"}, {editor: \"https://euscreen.eu/myeuscreen.html\"});</script>";
 	}
 	
 	
-	//var html = "<div class=\"player\" id=\"viewer\"></div><script>new europeanamediaplayer.default(document.getElementById(\"viewer\"), {}, {editor: \"http://video-editor.eu\", manifest: \""+manurl+"\"});</script>";
+	//var html = "<div class=\"player\" id=\"viewer\"></div><script>new europeanamediaplayer.default(document.getElementById(\"viewer\"), {}, {editor: \"https://video-editor.eu\", manifest: \""+manurl+"\"});</script>";
 
 	this.element.find('.modal-body.media-player').html(html);
 	this.element.find('.modal').modal('show');

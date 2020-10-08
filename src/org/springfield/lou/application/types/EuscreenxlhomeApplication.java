@@ -438,19 +438,21 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 						sendTicket(videoFile,ipAddress,ticket);}
 					catch (Exception e){}
 
-					videoFilePathWithTicket[i] = "http://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath() + "/rawvideo/1/raw.mp4?ticket="+ticket;
+					videoFilePathWithTicket[i] = "https://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath() + "/rawvideo/1/raw.mp4?ticket="+ticket;
 				} else if (videoFilePath.indexOf(".noterik.com/progressive/") > -1) {
 					Random randomGenerator = new Random();
 					Integer random= randomGenerator.nextInt(100000000);
 					String ticket = Integer.toString(random);
 					
 					String videoFile = video.substring(video.indexOf("progressive")+11);
+					videoFile = videoFile.startsWith("http://") ? videoFile.replaceFirst("http", "https") : videoFile;
 					
 					try{						
 						//System.out.println("CallingSendTicket");						
 						sendTicket(videoFile,ipAddress,ticket);}
 					catch (Exception e){}
 					
+					video = video.startsWith("http://") ? video.replaceFirst("http", "https") : video;
 					videoFilePathWithTicket[i] = video+"?ticket="+ticket;	
 				} else {
 					videoFilePathWithTicket[i] = video;
@@ -515,10 +517,13 @@ public class EuscreenxlhomeApplication extends Html5Application implements Obser
 		if(screenshot != null){
 			if (!wantedna) {
 				screenshot = screenshot.replace("edna/", "");
+				screenshot = screenshot.startsWith("http://") ? screenshot.replaceFirst("http", "https")  : screenshot ;
 			} else {
 				int pos = screenshot.indexOf("edna/");
 				if 	(pos!=-1) {
-					screenshot = "http://images.euscreenxl.eu/"+screenshot.substring(pos+5);
+					screenshot = "https://images.euscreenxl.eu/"+screenshot.substring(pos+5);
+				} else {
+					screenshot = screenshot.startsWith("http://") ? screenshot.replaceFirst("http", "https")  : screenshot ;
 				}
 			}
 			screenshot +="?script=euscreen640t";
