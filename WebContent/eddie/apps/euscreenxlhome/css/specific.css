@@ -308,11 +308,26 @@ body .home .main {
   color: #ffffff;
   font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
 }
+.home .main .row .collection-viewer-tab .row.main-nav .tabs .nav li a.educational:hover {
+  background: rgba(140, 198, 63);
+  border-radius: 0px;
+  color: #ffffff;
+  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+}
 .home .main .row .collection-viewer-tab .row.main-nav .tabs .nav li.active {
   border-right: 1px solid #00aeef;
 }
+.home .main .row .collection-viewer-tab .row.main-nav .tabs .nav li.educational-container.active {
+  border-right: 1px solid rgba(140, 198, 63);
+}
 .home .main .row .collection-viewer-tab .row.main-nav .tabs .nav li.active a {
   background: #00aeef;
+  border-radius: 0px;
+  color: #ffffff;
+  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+}
+.home .main .row .collection-viewer-tab .row.main-nav .tabs .nav li.active a.educational {
+  background: rgba(140, 198, 63);
   border-radius: 0px;
   color: #ffffff;
   font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
