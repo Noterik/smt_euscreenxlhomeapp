@@ -69,7 +69,7 @@ Player.prototype.setVideo = function(data){
 
 	if (user != "" && hash != "") {
 		var html = "<div class=\"player\" id=\"viewer\"></div><script>new EuropeanaMediaPlayer(document.getElementById(\"viewer\"), {manifest: \""
-				+ manurl + "\"}, {editor: \"https://video-editor.eu/user/"
+				+ manurl + "\"}, {editor: \"https://editor.euscreen.eu/user/"
 				+ user
 				+ "/hash/"
 				+ hash
