@@ -19,7 +19,7 @@ import java.util.Observer;
 import java.util.Random;
 import java.util.Scanner;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.dom4j.Node;
 import org.json.simple.JSONArray;
